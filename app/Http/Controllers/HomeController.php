@@ -23,7 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $activelink='dashboard';
+
+        return view('home')->with('activelink',$activelink);
     }
 
     public function users()
