@@ -30,25 +30,30 @@ class HomeController extends Controller
 
     public function users()
     {
-        return view('pages.Users');
+        $activelink='users';   
+        return view('pages.Users')->with('activelink',$activelink);;
     }
     public function violations()
     {
-        return view('pages.violations');
+        $activelink='violations';
+        return view('pages.violations')->with('activelink',$activelink);;
     }
 
     public function offenders()
     {
-        return view('pages.offenders');
+        $activelink='offenders';
+        return view('pages.offenders')->with('activelink',$activelink);;
     }
 
     public function sanction_cleared()
     {
-        return view('pages.sanction_cleared');
+        $activelink='saction_cleared';
+        return view('pages.sanction_cleared')->with('activelink',$activelink);;
     }
 
     public function report_logs()
     {
-        return view('pages.report_logs');
+        $activelink='report_logs';
+        return view('pages.report_logs')->with('activelink',$activelink);;
     }
 }
