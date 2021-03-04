@@ -141,10 +141,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
+      
       <li class="nav-item dropdown">
-        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+        <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-success" href="#" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
             {{ Auth::user()->name }}
+            <span class="navbar-text badge badge-light text-success ml-1">{{ Auth::user()->role }}</span>
         </a>
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -158,6 +160,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </form>
         </div>
     </li>
+    
+      
+    
       {{-- <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
           <i class="fas fa-th-large"></i>
