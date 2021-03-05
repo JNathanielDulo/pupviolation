@@ -136,20 +136,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item mr-2">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
       
       <li class="nav-item dropdown">
-        <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-success" href="#" role="button"
+        <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-danger" href="#" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-            {{ Auth::user()->name }}
-            <span class="navbar-text badge badge-light text-success ml-1">{{ Auth::user()->role }}</span>
+            <img src="{{ Auth::user()->profile_image }}" class="img-circle elevation-2 mb-2" style="width:20px;height:20px" alt="User Image">
+            <span class="ml-2 d-none d-md-inline text-light">
+              
+              {{ Auth::user()->name }}
+              
+            </span>
+            <span class="navbar-text badge badge-light text-danger ml-1">{{ Auth::user()->role }}</span>
+            
         </a>
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <span class="d-block d-md-none dropdown-item">
+              
+            {{ Auth::user()->name }}
+            
+          </span>
+          <div class="d-block d-md-none dropdown-divider"></div>
+
             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
                 {{ __('Logout') }}
