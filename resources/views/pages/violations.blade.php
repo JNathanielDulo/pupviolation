@@ -26,6 +26,7 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
+           @include('layouts.inc.messages')
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">Violations</h1>
@@ -44,7 +45,7 @@
                         <!-- Modal -->
                         <div class="modal fade" id="validation_add" tabindex="-1" aria-labelledby="validation_add"
                             aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="validation_add">Add Violations</h5>
@@ -52,20 +53,21 @@
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
-                                    <form>
-                                    <div class="modal-body">
-                                        
-                                            <div class="mb-3">
-                                                <label for="violationTitle" class="form-label">Violation Title</label>
-                                                <input type="text" class="form-control" id="violationTitle"
-                                                    aria-describedby="Violation Title">
 
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="violationDetails" class="form-label">Sanction Details</label>
-                                                <textarea class="form-control" style="resize: none;" rows="4"
-                                                    id="violationDetails"></textarea>
-                                            </div>
+                                    {!! Form::open(['route' => ['violations.store'],'method'=> 'POST']) !!}
+                                    <div class="modal-body">
+
+                                        <div class="mb-3">
+                                            {{Form::label('violationTitle','Violation Title')}}
+                                            {{Form::text('violationTitle', '', ['class' => 'form-control', 'placeholder' => 'Title', 'aria-describedby' => 'Violation Title'])}}
+                                            
+
+                                        </div>
+                                        <div class="mb-3">
+                                            {{Form::label('violationDetails','Disciplinary Sanctions',['class' => 'form-label'])}}
+                                            {{Form::textarea('violationDetails','',['class'=>'form-control ckeditor','style' =>'resize:none'])}}
+                                            
+                                        </div>
 
 
 
@@ -73,11 +75,10 @@
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default"
-                                            data-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
+                                        {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
                                     </div>
-                                    </form>
+                                    {!! Form::close() !!}
                                 </div>
                             </div>
                         </div>
@@ -115,75 +116,107 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                              <div class="table-responsive">
+                                @if(count($violations)>0)
+                                <div class="table-responsive-md">
 
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            
-                                            <th>Violation Title</th>
-                                            <th>Disciplinary Sanctions</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                          <td>Failure to bring validated I.D</td>
-                                          <td>
-                                            <p>
-                                              1st Offense – The student shall secure a Student’s Entry Slip from the Office of the Director of the student services.<br>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
 
-                                            2nd Offense – The student shall be given a warning slip by the Student Affairs Section.<br>
-                                            
-                                            3rd Offense – one (1) or (2) days suspension, depending on the reason for not bringing the I.D.<br>
-                                            
-                                            More than three (3) Offenses – minimum of (3) days suspension<br>
-                                          </p>
-                                          </td>
-                                          <td>
-                                            <button class="btn btn-xs btn-default"><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-xs btn-default"><i class="fas fa-ban text-danger"></i></button>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Failure to bring validated I.D</td>
-                                          <td>
-                                            <p>
-                                              1st Offense – The student shall secure a Student’s Entry Slip from the Office of the Director of the student services.<br>
+                                                <th class="w-25 text-center">Violation Title</th>
+                                                <th class="w-25">Disciplinary Sanctions</th>
+                                                <th class="w-auto">last updated</th>
+                                                <th class="w-auto">Actions</th>
 
-                                            2nd Offense – The student shall be given a warning slip by the Student Affairs Section.<br>
-                                            
-                                            3rd Offense – one (1) or (2) days suspension, depending on the reason for not bringing the I.D.<br>
-                                            
-                                            More than three (3) Offenses – minimum of (3) days suspension<br>
-                                          </p>
-                                          </td>
-                                          <td>
-                                            <button class="btn btn-xs btn-default"><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-xs btn-default"><i class="fas fa-ban text-danger"></i></button>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Failure to bring validated I.D</td>
-                                          <td>
-                                            <p>
-                                              1st Offense – The student shall secure a Student’s Entry Slip from the Office of the Director of the student services.<br>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($violations as $violation)
+                                            <tr>
 
-                                            2nd Offense – The student shall be given a warning slip by the Student Affairs Section.<br>
-                                            
-                                            3rd Offense – one (1) or (2) days suspension, depending on the reason for not bringing the I.D.<br>
-                                            
-                                            More than three (3) Offenses – minimum of (3) days suspension<br>
-                                          </p>
-                                          </td>
-                                          <td>
-                                            <button class="btn btn-xs btn-default"><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-xs btn-default"><i class="fas fa-ban text-danger"></i></button>
-                                          </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                              </div>
+
+                                                <td class="text-center">{{$violation->violationTitle}}</td>
+                                                <td>
+                                                    {!!$violation->disciplinarySanctions!!}
+                                                </td>
+                                                <td>{{$violation->updated_at}}</td>
+                                                <td class='row'>
+                                                    {{-- <a href="violationEdit/{{$violation->id}}"
+                                                    class="btn btn-xs btn-default"><i class="fas fa-edit"></i></a> --}}
+                                                    <button type="button" class="btn btn-sm ml-1 mb-1 btn-default"
+                                                        data-toggle="modal"
+                                                        data-target="#validation_edit{{$violation->id}}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="validation_edit{{$violation->id}}"
+                                                        tabindex="-1"
+                                                        aria-labelledby="validation_edit{{$violation->id}}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="validation_add">Edit
+                                                                        Violations</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">×</span>
+                                                                    </button>
+                                                                </div>
+                                                                {!! Form::open(['route' => ['violations.update',$violation->id],'method'=> 'POST']) !!}
+                                                                    <div class="modal-body">
+
+                                                                        <div class="mb-3">
+                                                                            {{Form::label('violationTitle','Violation Title')}}
+                                                                            {{Form::text('violationTitle', $violation->violationTitle, ['class' => 'form-control', 'placeholder' => 'Title', 'aria-describedby' => 'Violation Title'])}}
+                                                                            
+
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            {{Form::label('violationDetails','Disciplinary Sanctions',['class' => 'form-label'])}}
+                                                                            {{Form::textarea('violationDetails',$violation->disciplinarySanctions,['class'=>'form-control ckeditor','style' =>'resize:none'])}}
+                                                                            
+                                                                        </div>
+
+
+
+
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+
+                                                                        {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
+                                                                        {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
+                                                                    </div>
+                                                                    {{Form::hidden('_method','PUT')}}
+                                                                    {!! Form::close() !!}
+                                                               
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {!!Form::open(['route'=>['violations.destroy',$violation->id],'method' => 'POST']) !!}
+                                                    {{Form::button('<i class="fa fa-ban"></i>', ['type' => 'submit','class'=>'btn btn-sm btn-default ml-1 mb-1'])}}
+                                                    {{Form::hidden('_method','DELETE')}}
+                                                    
+                                                    {!! Form::close() !!}
+
+
+
+                                                </td>
+                                            </tr>
+                                            @endforeach
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                @else
+                                <p> Violation list empty</p>
+                                @endif
+
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -197,7 +230,11 @@
 </div>
 <!-- /.content-wrapper -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+
+
+@endsection
+@section('scripts')
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"
@@ -205,5 +242,34 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"
     integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous">
+</script> --}}
+<!-- Toastr -->
+<script src="adminlte/plugins/toastr/toastr.min.js"></script>
+<script src="{{asset('ckeditor/ckeditor.js')}}"></script>
+<script>
+    CKEDITOR.replace('violationbody-ckeditor');
+</script>
+
+<script>
+    $(function () {
+        CKEDITOR.replaceClass = 'ckeditor';
+
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        $('#swaldanger').on("click", function () {
+
+            Toast.fire({
+                icon: 'question',
+                title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+            });
+
+        });
+
+    });
+
 </script>
 @endsection

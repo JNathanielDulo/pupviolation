@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ViolationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,10 +34,12 @@ Route::get('/userlist', [HomeController::class, 'users']);
 Route::get('/users', [HomeController::class, 'users']);
 
 // violation page
-Route::get('/violations', [HomeController::class, 'violations']);
+// Route::get('/violations', [HomeController::class, 'violations']);
 
 Route::get('/offenders', [HomeController::class, 'offenders']);
 
 Route::get('/sanction_cleared', [HomeController::class, 'sanction_cleared']);
 
 Route::get('/report_logs', [HomeController::class, 'report_logs']);
+
+Route::resource('violations',ViolationController::class);
