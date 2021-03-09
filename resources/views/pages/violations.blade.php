@@ -117,14 +117,14 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 @if(count($violations)>0)
-                                <div class="table-responsive-md">
+                                <div class="col-12 table-responsive" style="height: 70vh;">
 
-                                    <table class="table table-hover">
+                                    <table class="table table-sm table-hover table-head-fixed">
                                         <thead>
                                             <tr>
 
                                                 <th class="w-25 text-center">Violation Title</th>
-                                                <th class="w-25">Disciplinary Sanctions</th>
+                                                <th class="w-50">Disciplinary Sanctions</th>
                                                 <th class="w-auto">last updated</th>
                                                 <th class="w-auto">Actions</th>
 

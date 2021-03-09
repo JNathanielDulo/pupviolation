@@ -1,5 +1,11 @@
 @extends('layouts.home')
+@section('css')
+<link rel="stylesheet" href="adminlte/plugins/jquery-ui/jquery-ui.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="adminlte/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
+@endsection
 @section('content')
 {{-- <div class="container">
     <div class="row justify-content-center">
@@ -35,70 +41,97 @@
 
 
                         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-           Offenders
-          </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Offenders
+                        </button>
 
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Add Offenders</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                          <label for="exampleInputEmail1" class="form-label">Filed By</label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Offenders</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {{-- <form> --}}
+                                          {!! Form::open(['route' =>['offenders.store'],'method'=>'POST']) !!}
+                                          {{-- hidden --}}
+                                            {{-- <div class="mb-3">
+                                                <label for="exampleInputEmail1" class="form-label">Filed By</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                                    aria-describedby="emailHelp">
 
+                                            </div> --}} 
+                                            
+                                            <div class="mb-3">
+                                             
+                                            {{Form::label('studentNumber','Student Number')}}
+                                            {{Form::text('studentNumber', '', ['class' => 'form-control', 'placeholder' => '0000-0000-SP-0', 'aria-describedby' => 'student number'])}}
+                                            {{Form::hidden('filedby', Auth::user()->name .'/'. Auth::user()->role)}}
+                                            </div>
+                                            <div class="mb-3">
+                                              {{Form::label('studentName','Name')}}
+                                              {{Form::text('studentName', '', ['class' => 'form-control', 'aria-describedby' => 'course'])}}
+                                              
+                                              </div>
+                                            
+                                            <div class="mb-3">
+                                            {{Form::label('studentCourse','Course')}}
+                                            
+                                            <select class="form-control select2bs4" name="studentCourse" id="studentCourse" style="width: 100%;">
+                                              <option>select Course...</option>
+                                              <option value="BSA">Bachelor of Science in Accountancy (BSA)</option>
+                                              <option value="BSBA-HRM">Bachelor of Science in Business Administration major in Human Resource Management (BSBA-HRM)</option>
+                                              <option value="BSBA-MM">Bachelor of Science in Business Administration major in Marketing Management (BSBA-MM)</option>
+                                              <option value="BSENTREP">Bachelor of Science in Entrepreneurship (BSENTREP)</option>
+                                              <option value="BSEDEN">Bachelor of Secondary Education major in English (BSEDEN)</option>
+                                              <option value="BSEDMT">Bachelor of Secondary Education major in Mathematics (BSEDMT)</option>
+                                              <option value="BSIT">Bachelor of Science in Information Technology (BSIT)</option>
+                                              
+                                            </select>
+                                            </div>
+                                            <div class="mb-3">
+                                              {{Form::label('email','E-mail')}}
+                                              {{Form::email('studentEmail', '', ['class' => 'form-control', 'aria-describedby' => 'email'])}}
+                                              
+                                            </div>
+                                            <div class="mb-3">
+                                              {{Form::label('contactNum','Contact Number')}}
+                                              {{Form::text('contactNum', '', ['class' => 'form-control', 'aria-describedby' => 'contact number'])}}
+                                              
+                                            </div>
+
+                                            <div class="mb-3">
+                                              <div class="form-group">
+                                              {{Form::label('violationid','Violation')}}
+                                                <select class="form-control select2bs4" name="violationid" id="violationid" style="width: 100%;">
+                                                  <option>select Violation...</option>
+                                                  @if (count($violations)>0)
+                                                  @foreach ($violations as $violation)
+
+                                                  <option value="{{$violation->id}}">{{$violation->violationTitle}}</option>
+                                                  @endforeach
+                                                  
+                                                  @else
+                                                  <option>violation list empty</option>
+                                                  @endif
+                                                  </select>
+                                              </div>
+                                            </div>
+                                            
+                                    </div>
+                                    <div class="modal-footer">
+                                      {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
+                                      {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
+                                      {!! Form::close() !!}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                          <label for="exampleInputPassword1" class="form-label">Student Number</label>
-                          <input type="password" class="form-control" id="exampleInputPassword1">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Name</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
-                          </div>
-                          <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Course</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
-                          </div>
-
-                          <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Violation Title</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
-                          </div>
-
-                          <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Number of Offenses (Per Classifications)</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
-                          </div>
-                          <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Number of Offenses (Over All Violations)</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
-                          </div>
-
-                          <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Sanctions</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
-                          </div>
-
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
 
                     </ol>
                 </div><!-- /.col -->
@@ -115,86 +148,55 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                          <div class="card-header">
-                            <h3 class="card-title">Responsive Hover Table</h3>
+                            <div class="card-header">
+                                <h3 class="card-title">Offender List</h3>
 
-                            <div class="card-tools">
-                              <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                                <div class="input-group-append">
-                                  <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                  </button>
-                                </div>
-                              </div>
+                                
                             </div>
-                          </div>
-                          <!-- /.card-header -->
-                          <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
-                              <thead>
-                                <tr>
-                                  <th>Filed By</th>
-                                  <th>Student Number</th>
-                                  <th>Name</th>
-                                  <th>Course</th>
-                                  <th>Violation Title</th>
-                                  <th>Number of Offenses (Per Classifications)</th>
-                                  <th>Number of Offenses (Over All Violations)</th>
-                                  <th>Sanctions</th>
-                                  <th>Actions</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Guard</td>
-                                  <td>2017-00039-SP-0</td>
-                                  <td>Joana Marie Kimpano</td>
-                                  <td>BSIT 4-1</td>
-                                  <td>NO ID</td>
-                                  <td><span class="tag tag-success text-danger bg-white border border-warning rounded p-2" style="color:#ffc107!important;">1st offense</span></td>
-                                  <td>1st</td>
-                                  <th></th>
-                                </tr>
-                                <tr>
-                                  <td>Guard</td>
-                                  <td>2017-00024-SP-0</td>
-                                  <td>Marlou Rillera</td>
-                                  <td>BSIT 4-1</td>
-                                  <td>Wearing of Inappropriate attire</td>
-                                  <td><span class="tag tag-warning text-warning bg-white border border-warning rounded p-2">2nd offense</span></td>
-                                  <td>1st</td>
-                                  <th></th>
-                                </tr>
-                                <tr>
-                                  <td>Campus Director</td>
-                                  <td>2017-00021-SP-0</td>
-                                  <td>Cerilo Verdejo</td>
-                                  <td>BSIT 4-1</td>
-                                  <td>Scandalous Display of Affection</td>
-                                  <td><span class="tag tag-primary text-danger bg-white border border-danger rounded p-2">3rd offense</span></td>
-                                  <td>1st</td>
-                                  <th></th>
-                                </tr>
-                                <tr>
-
-                                   <td>Guard</td>
-                                   <td>2017-00028-SP-0</td>
-                                   <td>Patrick Tabogon</td>
-                                   <td>BSIT 4-1</td>
-                                   <td>Loss of ID</td>
-                                   <td><span class="tag tag-danger text-light bg-danger border border-warning rounded p-2">4th offense</span></td>
-                                   <td>1st</td>
-                                   <th></th>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <!-- /.card-body -->
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                              @if(count($offenders)>0)
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Filed By</th>
+                                            <th>Student Number</th>
+                                            <th>Name</th>
+                                            <th>Course</th>
+                                            <th>Violation Title</th>
+                                            <th>Number of Offenses</th>
+                                            <th>Total Offenses</th>
+                                            <th>Sanctions</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      @foreach ($offenders as $offender)
+                                          
+                                      @endforeach
+                                        <tr>
+                                          <td> {!!$offender->filedby!!} </td>
+                                          <td>{!!$offender->studentNumber!!}</td>
+                                          <td>{!!$offender->name!!}</td>
+                                          <td>{!!$offender->course!!}</td>
+                                          <td>
+                                          
+                                          </td>
+                                          <td>Number of Offenses</td>
+                                          <td>Total Offenses</td>
+                                          <td>Sanctions</td>
+                                          <td>Actions</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                              @else
+                              <p> Offender list empty</p>
+                              @endif
+                            </div>
+                            <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
-                      </div>
+                    </div>
                 </div>
             </section>
         </div><!-- /.container-fluid -->
@@ -203,7 +205,23 @@
 </div>
 <!-- /.content-wrapper -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+
+@endsection
+
+@section('scripts')
+<!-- Select2 -->
+<script src="adminlte/plugins/select2/js/select2.full.min.js"></script>
+<script>
+  $( function() { 
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+
+
+});
+</script>
 @endsection
