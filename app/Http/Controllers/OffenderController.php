@@ -18,8 +18,7 @@ class OffenderController extends Controller
         $violations = Violation::all();
         $offenders = Offender::all();
         $activelink='offenders';
-        // return $violations[0];
-
+        
         return view('pages.offenders')
         ->with('activelink',$activelink)
         ->with('violations',$violations)
@@ -51,23 +50,49 @@ class OffenderController extends Controller
             'studentName' => 'required',
             'studentCourse' => 'required',
             'studentEmail' => 'required',
-            'violationid' => 'required',
             'contactNum' => 'required'
         ]);
-        //create post
-        $offender = new Offender;
-        $offender->filedby = $request->input('filedby');
-        $offender->studentNumber = $request->input('studentNumber');
-        $offender->name = $request->input('studentName');
-        $offender->email = $request->input('studentEmail');
-        $offender->course = $request->input('studentCourse');
-        $offender->contactnum = $request->input('contactNum');
-        $offender->violationid = $request->input('violationid');
-        
+        //create
+        //check if it exist
+        //if it exist tag new violation
+        //else new entry
+
+        // $offender = Offender::firstOrNew(
+        //     ['studentNumber' => $request->input('studentNumber')],
+        //     ['name' => $request->input('studentName')]
+        // );
+            $offender = Offender::where('studentNumber','=',$request->input('studentNumber'))
+            ->where('name','=',$request->input('studentName'))
+            ->first();
+        if($offender){
+            $offender->save();
+            return redirect()->route('offenders.index')->with('success','offender already exists:'.$request->input('studentNumber').'/'.$request->input('studentName'));
+        }else{
+         $offender = new offender;
+         $offender->filedby = $request->input('filedby');
+            $offender->studentNumber = $request->input('studentNumber');
+            $offender->name = $request->input('studentName');
+            $offender->email = $request->input('studentEmail');
+            $offender->course = $request->input('studentCourse');
+            $offender->contactnum = $request->input('contactNum');
         $offender->save();
+       
+       
+        return redirect()->route('offenders.index')->with('success', 'new offender Added');
+        }
         
-        return redirect('/offenders')->with('success', 'new offender Added');
+        
     
+        
+        
+        
+
+    
+        //    $offender->save();
+            // return redirect()->route('offenders.index')->with('success','offender already exists:'.$request->input('studentNumber').'/'.$request->input('studentName'));
+        
+        
+        // }
     }
 
     /**
@@ -78,7 +103,21 @@ class OffenderController extends Controller
      */
     public function show($id)
     {
-        //
+        //display violation of the given offender id
+        //and show it on the offender/{id}
+
+        $offender = Offender::find($id);
+        $violations = Violation::all();
+        $activelink='offenders';
+        
+
+        return view('pages.offenderview')
+        ->with('activelink',$activelink)
+        ->with('violations',$violations)
+        ->with('offender',$offender);
+  
+
+        
     }
 
     /**
@@ -89,7 +128,7 @@ class OffenderController extends Controller
      */
     public function edit($id)
     {
-        //
+       
     }
 
     /**
@@ -101,7 +140,24 @@ class OffenderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'studentNumber' => 'required',
+            'studentName' => 'required',
+            'studentCourse' => 'required',
+            'studentEmail' => 'required',
+            'contactNum' => 'required'
+        ]);
+
+        $offender = Offender::find($id);
+        $offender->filedby = $request->input('filedby');
+        $offender->studentNumber = $request->input('studentNumber');
+        $offender->name = $request->input('studentName');
+        $offender->email = $request->input('studentEmail');
+        $offender->course = $request->input('studentCourse');
+        $offender->contactnum = $request->input('contactNum');
+        $offender->save();
+
+        return redirect('/offenders')->with('success', 'Offender Updated');
     }
 
     /**

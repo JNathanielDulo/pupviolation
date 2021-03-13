@@ -13,11 +13,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="adminlte/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="{{asset('adminlte/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="adminlte/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="{{asset('adminlte/dist/css/adminlte.min.css')}}">
   <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <link rel="stylesheet" href="{{asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
   @yield('css')
 </head>
 <body class="hold-transition sidebar-mini">
@@ -70,7 +70,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <li class="nav-item dropdown">
         <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-danger" href="#" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-            <img src="{{ Auth::user()->profile_image }}" class="img-circle elevation-2 mb-2" style="width:20px;height:20px" alt="User Image">
+            <img src="{{asset('/').Auth::user()->profile_image }}" class="img-circle elevation-2 mb-2" style="width:20px;height:20px" alt="User Image">
             <span class="ml-2 d-none d-md-inline text-light">
               
               {{ Auth::user()->name }}
@@ -121,7 +121,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <img src="adminlte/dist/img/pup logo.png" alt="PUP Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <img src="{{asset('adminlte/dist/img/pup logo.png')}}" alt="PUP Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">PUP Student Violation</span>
     </a>
 
@@ -130,7 +130,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ Auth::user()->profile_image }}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ asset('/').Auth::user()->profile_image }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block"> {{ Auth::user()->name }}</a>
@@ -144,7 +144,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-                <a href="home" class="nav-link {{($activelink=='dashboard')? 'active': ''}}">
+                <a href="{{route('home')}}" class="nav-link {{($activelink=='dashboard')? 'active': ''}}">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>
                     Dashboard
@@ -161,7 +161,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-                <a href="users" class="nav-link {{($activelink=='users')? 'active': ''}}">
+                <a href="{{route('users')}}" class="nav-link {{($activelink=='users')? 'active': ''}}">
                 <i class="nav-icon fas fa-user-alt"></i>
                   <p>
                     Users
@@ -176,7 +176,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-                <a href="violations" class="nav-link {{($activelink=='violations')? 'active': ''}}">
+                <a href="{{route('violations.index')}}" class="nav-link {{($activelink=='violations')? 'active': ''}}">
                   <i class="nav-icon fa-fw fas fa-exclamation-triangle"></i>
                   <p>
                     Violation
@@ -191,7 +191,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
        <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                <li class="nav-item">
-                <a href="offenders" class="nav-link {{($activelink=='offenders')? 'active': ''}}">
+                <a href="{{route('offenders.index')}}" class="nav-link {{($activelink=='offenders')? 'active': ''}}">
                   <i class="nav-icon fa-fw fas fa-users"></i>
                   <p>
                     Offenders
@@ -208,7 +208,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-                <a href="sanction_cleared" class="nav-link {{($activelink=='sanction_cleared')? 'active': ''}}">
+                <a href="{{route('sanction_cleared')}}" class="nav-link {{($activelink=='sanction_cleared')? 'active': ''}}">
                  <i class="nav-icon fa-fw fas fa-check-circle"></i>
                   <p>
                     Sanction Cleared
@@ -225,7 +225,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-                <a href="report_logs" class="nav-link {{($activelink=='report_logs')? 'active': ''}}">
+                <a href="{{route('reportlogs')}}" class="nav-link {{($activelink=='report_logs')? 'active': ''}}">
                  <i class="nav-icon fa-fw fas fa-clipboard-list"></i>
                   <p>
                     Report logs
@@ -272,17 +272,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="{{asset('adminlte/plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap 4 -->
-<script src="adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{{asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- ChartJS -->
-<script src="adminlte/plugins/chart.js/Chart.min.js"></script>
+<script src="{{asset('adminlte/plugins/chart.js/Chart.min.js')}}"></script>
 <!-- AdminLTE App -->
-<script src="adminlte/dist/js/adminlte.min.js"></script>
+<script src="{{asset('adminlte/dist/js/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="adminlte/dist/js/demo.js"></script>
+<script src="{{asset('adminlte/dist/js/demo.js')}}"></script>
 <!-- SweetAlert2 -->
-<script src="adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="{{asset('adminlte/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
 @yield('scripts')
 

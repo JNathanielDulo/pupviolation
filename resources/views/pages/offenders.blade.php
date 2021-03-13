@@ -1,9 +1,9 @@
 @extends('layouts.home')
 @section('css')
-<link rel="stylesheet" href="adminlte/plugins/jquery-ui/jquery-ui.css">
+<link rel="stylesheet" href="{{asset('adminlte/plugins/jquery-ui/jquery-ui.css')}}">
 <!-- Select2 -->
-<link rel="stylesheet" href="adminlte/plugins/select2/css/select2.min.css">
-<link rel="stylesheet" href="adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="{{asset('adminlte/plugins/select2/css/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 
 @endsection
 @section('content')
@@ -32,6 +32,7 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
+            @include('layouts.inc.messages')
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">Offenders</h1>
@@ -41,17 +42,17 @@
 
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newOffender">
                             Offenders
                         </button>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        <div class="modal fade" id="newOffender" tabindex="-1" aria-labelledby="newOffenderTitle"
                             aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add Offenders</h5>
+                                        <h5 class="modal-title" id="newOffenderTitle">Add Offenders</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">×</span>
                                         </button>
@@ -105,23 +106,7 @@
                                               
                                             </div>
 
-                                            <div class="mb-3">
-                                              <div class="form-group">
-                                              {{Form::label('violationid','Violation')}}
-                                                <select class="form-control select2bs4" name="violationid" id="violationid" style="width: 100%;">
-                                                  <option>select Violation...</option>
-                                                  @if (count($violations)>0)
-                                                  @foreach ($violations as $violation)
-
-                                                  <option value="{{$violation->id}}">{{$violation->violationTitle}}</option>
-                                                  @endforeach
-                                                  
-                                                  @else
-                                                  <option>violation list empty</option>
-                                                  @endif
-                                                  </select>
-                                              </div>
-                                            </div>
+                                            
                                             
                                     </div>
                                     <div class="modal-footer">
@@ -163,30 +148,108 @@
                                             <th>Student Number</th>
                                             <th>Name</th>
                                             <th>Course</th>
-                                            <th>Violation Title</th>
                                             <th>Number of Offenses</th>
                                             <th>Total Offenses</th>
-                                            <th>Sanctions</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                       @foreach ($offenders as $offender)
-                                          
+                                      <tr>
+                                        <td> {!!$offender->filedby!!} </td>
+                                        <td>{!!$offender->studentNumber!!}</td>
+                                        <td>{!!$offender->name!!}</td>
+                                        <td>{!!$offender->course!!}</td>
+                                        
+                                        <td>Number of Offenses</td>
+                                        <td>Total Offenses</td>
+                                        <td>
+                                            <a href="{{asset('/offenders/'.$offender->id)}}"  class="btn btn-xs btn-default">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            
+                                            <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editOffender{{$offender->id}}">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="editOffender{{$offender->id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Add Offenders</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                {{-- <form> --}}
+                                                                {!! Form::open(['route' =>['offenders.update',$offender->id],'method'=>'POST']) !!}
+                                                                
+                                                                {{-- hidden --}}
+                                                                    {{-- <div class="mb-3">
+                                                                        <label for="exampleInputEmail1" class="form-label">Filed By</label>
+                                                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                                                            aria-describedby="emailHelp">
+
+                                                                    </div> --}} 
+                                                                    
+                                                                    <div class="mb-3">
+                                                                    
+                                                                    {{Form::label('studentNumber','Student Number')}}
+                                                                    {{Form::text('studentNumber', $offender->studentNumber, ['class' => 'form-control', 'placeholder' => '0000-0000-SP-0', 'aria-describedby' => 'student number'])}}
+                                                                    {{Form::hidden('filedby', Auth::user()->name .'/'. Auth::user()->role)}}
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                    {{Form::label('studentName','Name')}}
+                                                                    {{Form::text('studentName', $offender->name, ['class' => 'form-control', 'aria-describedby' => 'course'])}}
+                                                                    
+                                                                    </div>
+                                                                    
+                                                                    <div class="mb-3">
+                                                                    {{Form::label('studentCourse','Course')}}
+                                                                    
+                                                                    <select class="form-control"  name="studentCourse" id="studentCourse" style="width: 100%;">
+                                                                    <option value="{{$offender->course}}">{{$offender->course}}</option>
+                                                                    <option value="BSA">Bachelor of Science in Accountancy (BSA)</option>
+                                                                    <option value="BSBA-HRM">Bachelor of Science in Business Administration major in Human Resource Management (BSBA-HRM)</option>
+                                                                    <option value="BSBA-MM">Bachelor of Science in Business Administration major in Marketing Management (BSBA-MM)</option>
+                                                                    <option value="BSENTREP">Bachelor of Science in Entrepreneurship (BSENTREP)</option>
+                                                                    <option value="BSEDEN">Bachelor of Secondary Education major in English (BSEDEN)</option>
+                                                                    <option value="BSEDMT">Bachelor of Secondary Education major in Mathematics (BSEDMT)</option>
+                                                                    <option value="BSIT">Bachelor of Science in Information Technology (BSIT)</option>
+                                                                    
+                                                                    </select>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                    {{Form::label('email','E-mail')}}
+                                                                    {{Form::email('studentEmail', $offender->email, ['class' => 'form-control', 'aria-describedby' => 'email'])}}
+                                                                    
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                    {{Form::label('contactNum','Contact Number')}}
+                                                                    {{Form::text('contactNum', $offender->contactnum, ['class' => 'form-control', 'aria-describedby' => 'contact number'])}}
+                                                                    
+                                                                    </div>
+                                                                    
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                            {{ Form::hidden('_method','PUT')}}
+                                                            {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
+                                                            {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
+                                                            
+                                                            {!! Form::close() !!}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        </td>
+                                      </tr>
                                       @endforeach
-                                        <tr>
-                                          <td> {!!$offender->filedby!!} </td>
-                                          <td>{!!$offender->studentNumber!!}</td>
-                                          <td>{!!$offender->name!!}</td>
-                                          <td>{!!$offender->course!!}</td>
-                                          <td>
-                                          
-                                          </td>
-                                          <td>Number of Offenses</td>
-                                          <td>Total Offenses</td>
-                                          <td>Sanctions</td>
-                                          <td>Actions</td>
-                                        </tr>
+                                        
                                     </tbody>
                                 </table>
                               @else
@@ -210,7 +273,7 @@
 
 @section('scripts')
 <!-- Select2 -->
-<script src="adminlte/plugins/select2/js/select2.full.min.js"></script>
+<script src="{{asset('adminlte/plugins/select2/js/select2.full.min.js')}}"></script>
 <script>
   $( function() { 
     //Initialize Select2 Elements

@@ -92,8 +92,9 @@ class ViolationController extends Controller
             'violationTitle' => 'required',
             'violationDetails' => 'required'
         ]);
-        //create post
+        
         $violation = Violation::find($id);
+      
         $violation->violationTitle = $request->input('violationTitle');
         $violation->disciplinarySanctions = $request->input('violationDetails');
         $violation->save();
@@ -113,4 +114,5 @@ class ViolationController extends Controller
         $violation->delete();
         return redirect('/violations')->with('success', 'Violation removed');
     }
+    
 }

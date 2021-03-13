@@ -16,10 +16,17 @@
   </div>
 @endif
 
-@if(session('error'))
+{{-- @if(session('error'))
 <div class="alert alert-warning alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
-    {{$error}}
+    {{$errors}}
   </div>
-@endif
+@endif --}}
+{{-- @if(session('message'))
+<div class="alert alert-default alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h5><i class="icon fas fa-exclamation-triangle"></i> Message</h5>
+    {{$message}}
+  </div>
+@endif --}}

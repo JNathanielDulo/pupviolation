@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Role extends Migration
+class DropViolationIdOnOffenderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class Role extends Migration
      */
     public function up()
     {
-        //
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->string('role');
+        Schema::table('offenders',function (Blueprint $table){
+            $table->dropColumn('violationid');
+
         });
     }
 
@@ -27,10 +26,8 @@ class Role extends Migration
      */
     public function down()
     {
-        //
-        Schema::table('users', function (Blueprint $table) {
-            //
-            $table->dropColumn('role');
+        Schema::table('offenders',function(Blueprint $table){
+            $table->integer('violationid');
         });
     }
 }

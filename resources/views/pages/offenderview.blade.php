@@ -1,5 +1,11 @@
 @extends('layouts.home')
+@section('css')
+<link rel="stylesheet" href="{{asset('adminlte/plugins/jquery-ui/jquery-ui.css')}}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{{asset('adminlte/plugins/select2/css/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 
+@endsection
 @section('content')
 {{-- <div class="container">
     <div class="row justify-content-center">
@@ -36,52 +42,96 @@
 
 
 
-                        <button type="button" class="btn btn-success mb-1 mr-1" data-toggle="modal" data-target="#validation_add">
-                            New Violation
+                        
+                        
+                        <!-- Button trigger modal -->
+                        
+                        <button type="button" class="btn btn btn-success mb-1 mr-1" data-toggle="modal" data-target="#newViolation">
+                            new Violation
                         </button>
-                        <a href="violations/archive" class="btn btn-warning mb-1 mr-1 text-light">
-                            Violation Archive
+                        <a href="{{route('offenders.index')}}" class="btn btn btn-primary mb-1 mr-1" >
+                            Back
                         </a>
 
-
-
                         <!-- Modal -->
-                        <div class="modal fade" id="validation_add" tabindex="-1" aria-labelledby="validation_add"
+                        <div class="modal fade" id="newViolation" tabindex="-1" aria-labelledby="newViolationTitle"
                             aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="validation_add">Add Violations</h5>
+                                        <h5 class="modal-title" id="newViolationTitle">Add Offenders</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
-
-                                    {!! Form::open(['route' => ['violations.store'],'method'=> 'POST']) !!}
                                     <div class="modal-body">
-
-                                        <div class="mb-3">
-                                            {{Form::label('violationTitle','Violation Title')}}
-                                            {{Form::text('violationTitle', '', ['class' => 'form-control', 'placeholder' => 'Title', 'aria-describedby' => 'Violation Title'])}}
+                                        <div class="row">
+                                        {{-- <form> --}}
+                                        {!! Form::open(['route' =>['offenderview.store'],'method'=>'POST','class'=>'row p-2']) !!}
+                                        {{Form::hidden('offender_id', $offender->id)}}
                                             
+                                            <div class="col-md-6">
+                                            {{Form::label('studentNumber','student Number')}}
+                                            :
+                                            {{Form::label('studentNumber',$offender->studentNumber)}}
+                                            {{Form::hidden('studentNumber', $offender->studentNumber, ['class' => 'form-control', 'placeholder' => '0000-0000-SP-0', 'aria-describedby' => 'student number'])}}
+                                            {{Form::hidden('filedby', Auth::user()->name .'/'. Auth::user()->role)}}
+                                            </div>
+                                            <div class="col-md-6">
+                                            {{Form::label('',"Complete Name")}}
+                                            :
+                                            {{Form::label('studentName',$offender->name)}}
+                                            {{Form::hidden('studentName', $offender->name, ['class' => 'form-control', 'aria-describedby' => 'course'])}}
+                                        
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                            {{Form::label('studentCourse','Course :')}}
+                                            {{Form::label('studentCourse',$offender->course)}}
+                                            
+                                            <select class="form-control" name="studentCourse" id="studentCourse" style="width: 100%;" hidden>
+                                            <option value="{{$offender->course}}" selected option>{{$offender->course}}</option>
+                                            </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                            {{Form::label('email','E-mail :')}}
+                                            {{Form::label('email',$offender->email)}}
+                                            {{Form::hidden('studentEmail', $offender->email,['class' => 'form-control', 'aria-describedby' => 'email'])}}
+                                            
+                                            </div>
+                                            <div class="col-md-6 ml-md-auto">
+                                            {{Form::label('contactNum','Contact Number :')}}
+                                            {{Form::label('contactNum',$offender->contactnum)}}
+                                            {{Form::hidden('contactNum', $offender->contactnum, ['class' => 'form-control', 'aria-describedby' => 'contact number'])}}
+                                            
+                                            </div>
+
+                                            <div class="col-12">
+                                            <div class="form-group">
+                                            {{Form::label('violationid','Violation')}}
+                                                <select class="form-control select2bs4 select2" name="violationid" id="violationid" style="width: 100%;">
+                                                <option>select Violation...</option>
+                                                @if (count($violations)>0)
+                                                @foreach ($violations as $violation)
+
+                                                <option value="{{$violation->id}}">{{$violation->violationTitle}}</option>
+                                                @endforeach
+                                                
+                                                @else
+                                                <option>violation list empty</option>
+                                                @endif
+                                                </select>
+                                            </div>
+                                            </div>
 
                                         </div>
-                                        <div class="mb-3">
-                                            {{Form::label('violationDetails','Disciplinary Sanctions',['class' => 'form-label'])}}
-                                            {{Form::textarea('violationDetails','',['class'=>'form-control ckeditor','style' =>'resize:none'])}}
                                             
-                                        </div>
-
-
-
-
-
                                     </div>
                                     <div class="modal-footer">
-                                        {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
-                                        {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
-                                    </div>
+                                    {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
+                                    {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
                                     {!! Form::close() !!}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +152,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Violation List</h3>
+                                <h3 class="card-title">{!!$offender->studentNumber." ".$offender->name!!} Violation List</h3>
 
                                 <div class="card-tools">
                                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -119,7 +169,7 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                @if(count($violations)>0)
+                                @if(count($offender->violations)>0)
                                 <div class="col-12 table-responsive" style="height: 70vh;">
 
                                     <table class="table table-sm table-hover table-head-fixed">
@@ -127,29 +177,27 @@
                                             <tr>
 
                                                 <th class="w-25 text-center">Violation Title</th>
-                                                <th class="w-50">Disciplinary Sanctions</th>
-                                                <th class="w-auto">last updated</th>
+                                                <th class="w-50">number of offense</th>
                                                 <th class="w-auto">Actions</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($violations as $violation)
+                                            @foreach ($offender->violations as $violation)
                                             <tr>
 
 
                                                 <td class="text-center">{{$violation->violationTitle}}</td>
                                                 <td>
-                                                    {!!$violation->disciplinarySanctions!!}
+                                                    1st offense
                                                 </td>
-                                                <td>{{$violation->updated_at}}</td>
                                                 <td class='row'>
                                                     {{-- <a href="violationEdit/{{$violation->id}}"
                                                     class="btn btn-xs btn-default"><i class="fas fa-edit"></i></a> --}}
                                                     <button type="button" class="btn btn-sm ml-1 mb-1 btn-default"
                                                         data-toggle="modal"
                                                         data-target="#validation_edit{{$violation->id}}">
-                                                        <i class="fas fa-edit"></i>
+                                                        <i class="fas fa-eye"></i>
                                                     </button>
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="validation_edit{{$violation->id}}"
@@ -159,26 +207,25 @@
                                                         <div class="modal-dialog modal-lg">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="validation_add">Edit
-                                                                        Violations</h5>
+                                                                    <h5 class="modal-title" id="validation_add">view
+                                                                        Violation</h5>
                                                                     <button type="button" class="close"
                                                                         data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">×</span>
                                                                     </button>
                                                                 </div>
-                                                                {!! Form::open(['route' => ['violations.update',$violation->id],'method'=> 'POST']) !!}
+                                                                {!! Form::open() !!}
                                                                     <div class="modal-body">
 
                                                                         <div class="mb-3">
-                                                                            {{Form::label('violationTitle','Violation Title')}}
-                                                                            {{Form::text('violationTitle', $violation->violationTitle, ['class' => 'form-control', 'placeholder' => 'Title', 'aria-describedby' => 'Violation Title'])}}
-                                                                            
+                                                                            <p class='form-label text-bold'>Violation Title</p>
+                                                                            {!!$violation->violationTitle!!}
 
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             {{Form::label('violationDetails','Disciplinary Sanctions',['class' => 'form-label'])}}
-                                                                            {{Form::textarea('violationDetails',$violation->disciplinarySanctions,['class'=>'form-control ckeditor','style' =>'resize:none'])}}
-                                                                            
+                                                                        
+                                                                            {!!$violation->disciplinarySanctions!!}
                                                                         </div>
 
 
@@ -188,21 +235,20 @@
                                                                     </div>
                                                                     <div class="modal-footer">
 
-                                                                        {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
-                                                                        {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
+                                                                        {{Form::button('close',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
                                                                     </div>
-                                                                    {{Form::hidden('_method','PUT')}}
+                                                                    
                                                                     {!! Form::close() !!}
                                                                
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    {!!Form::open(['route'=>['violations.destroy',$violation->id],'method' => 'POST']) !!}
+                                                    {{-- {!!Form::open(['route'=>['violations.destroy',$violation->id],'method' => 'POST']) !!}
                                                     {{Form::button('<i class="fa fa-ban"></i>', ['type' => 'submit','class'=>'btn btn-sm btn-default ml-1 mb-1'])}}
                                                     {{Form::hidden('_method','DELETE')}}
-                                                    
-                                                    {!! Form::close() !!}
+                                                     --}}
+                                                    {{-- {!! Form::close() !!} --}}
 
 
 
@@ -249,14 +295,21 @@
 <!-- Toastr -->
 <script src="{{asset('adminlte/plugins/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
-<script>
+<script src="{{asset('adminlte/plugins/select2/js/select2.full.min.js')}}"></script>
+{{-- <script>
     CKEDITOR.replace('violationbody-ckeditor');
-</script>
+</script> --}}
 
 <script>
     $(function () {
-        CKEDITOR.replaceClass = 'ckeditor';
+        // CKEDITOR.replaceClass = 'ckeditor';
+        //Initialize Select2 Elements
+        $('.select2').select2()
 
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+        theme: 'bootstrap4'
+        })
         var Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -271,6 +324,8 @@
             });
 
         });
+
+        
 
     });
 
