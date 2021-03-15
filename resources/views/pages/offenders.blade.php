@@ -148,7 +148,6 @@
                                             <th>Student Number</th>
                                             <th>Name</th>
                                             <th>Course</th>
-                                            <th>Number of Offenses</th>
                                             <th>Total Offenses</th>
                                             <th>Actions</th>
                                         </tr>
@@ -160,9 +159,7 @@
                                         <td>{!!$offender->studentNumber!!}</td>
                                         <td>{!!$offender->name!!}</td>
                                         <td>{!!$offender->course!!}</td>
-                                        
-                                        <td>Number of Offenses</td>
-                                        <td>Total Offenses</td>
+                                        <td>{{count($offender->violations)}}</td>
                                         <td>
                                             <a href="{{asset('/offenders/'.$offender->id)}}"  class="btn btn-xs btn-default">
                                                 <i class="fas fa-eye"></i>

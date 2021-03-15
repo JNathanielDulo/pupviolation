@@ -154,103 +154,54 @@
                             <div class="card-header">
                                 <h3 class="card-title">{!!$offender->studentNumber." ".$offender->name!!} Violation List</h3>
 
-                                <div class="card-tools">
-                                    <div class="input-group input-group-sm" style="width: 150px;">
-                                        <input type="text" name="table_search" class="form-control float-right"
-                                            placeholder="Search">
-
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 @if(count($offender->violations)>0)
                                 <div class="col-12 table-responsive" style="height: 70vh;">
 
-                                    <table class="table table-sm table-hover table-head-fixed">
+                                    <table class="table table-hover table-head-fixed">
                                         <thead>
                                             <tr>
 
-                                                <th class="w-25 text-center">Violation Title</th>
-                                                <th class="w-50">number of offense</th>
+                                                <th class="w-50 text-left">Violation Title</th>
+                                                <th class="w-25">number of offense</th>
                                                 <th class="w-auto">Actions</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($offender->violations as $violation)
+                                            @foreach ($violationlist as $violation)
                                             <tr>
 
 
-                                                <td class="text-center">{{$violation->violationTitle}}</td>
+                                                <td class="text-left">{{$violation->violationTitle}}</td>
                                                 <td>
-                                                    1st offense
+
+                                                    @if($violation->occurances==1)
+                                                    <span class="tag tag-success text-danger bg-white border border-warning rounded p-2" style="color:#ffc107!important;">
+                                                        {{$violation->occurances}}st offense
+                                                    </span>
+                                                    @elseif($violation->occurances==2)
+                                                    <span class="tag tag-success text-danger bg-white border rounded p-2" style="color:#ff7504!important;border-color:#ff7504!important">
+                                                        {{$violation->occurances}}nd offense
+                                                    </span>
+                                                    @elseif($violation->occurances==3)
+                                                    <span class="tag tag-success text-danger bg-white border rounded p-2" style="color:#ff0404!important;border-color:#ff0404!important">
+                                                        {{$violation->occurances}}rd offense
+                                                    </span>
+                                                    @elseif($violation->occurances>3&&$violation->occurances<21)
+                                                    <span class="tag tag-success bg-danger  border rounded p-2" style="color:#fff!important;border-color:#fffb04!important;">
+                                                        {{$violation->occurances}}th offense
+                                                    </span>
+                                                    @endif
+
+                                                    
+                                                    
                                                 </td>
                                                 <td class='row'>
-                                                    {{-- <a href="violationEdit/{{$violation->id}}"
-                                                    class="btn btn-xs btn-default"><i class="fas fa-edit"></i></a> --}}
-                                                    <button type="button" class="btn btn-sm ml-1 mb-1 btn-default"
-                                                        data-toggle="modal"
-                                                        data-target="#validation_edit{{$violation->id}}">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="validation_edit{{$violation->id}}"
-                                                        tabindex="-1"
-                                                        aria-labelledby="validation_edit{{$violation->id}}"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog modal-lg">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="validation_add">view
-                                                                        Violation</h5>
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">×</span>
-                                                                    </button>
-                                                                </div>
-                                                                {!! Form::open() !!}
-                                                                    <div class="modal-body">
-
-                                                                        <div class="mb-3">
-                                                                            <p class='form-label text-bold'>Violation Title</p>
-                                                                            {!!$violation->violationTitle!!}
-
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            {{Form::label('violationDetails','Disciplinary Sanctions',['class' => 'form-label'])}}
-                                                                        
-                                                                            {!!$violation->disciplinarySanctions!!}
-                                                                        </div>
-
-
-
-
-
-                                                                    </div>
-                                                                    <div class="modal-footer">
-
-                                                                        {{Form::button('close',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
-                                                                    </div>
-                                                                    
-                                                                    {!! Form::close() !!}
-                                                               
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {{-- {!!Form::open(['route'=>['violations.destroy',$violation->id],'method' => 'POST']) !!}
-                                                    {{Form::button('<i class="fa fa-ban"></i>', ['type' => 'submit','class'=>'btn btn-sm btn-default ml-1 mb-1'])}}
-                                                    {{Form::hidden('_method','DELETE')}}
-                                                     --}}
-                                                    {{-- {!! Form::close() !!} --}}
-
-
+                                                 action
 
                                                 </td>
                                             </tr>
