@@ -7,6 +7,15 @@ use App\Models\Violation;
 
 class ViolationArchiveController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function show_deleted(){
         $violations = Violation::onlyTrashed()->paginate(10);
         $activelink='violations';

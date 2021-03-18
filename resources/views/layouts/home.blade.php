@@ -18,13 +18,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('adminlte/dist/css/adminlte.min.css')}}">
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="{{asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+  <style>
+    .pupcolor{
+
+     color:#800000;
+    }
+    .pupbg{
+      background-color: #800000;
+    }
+  
+    
+  </style>
   @yield('css')
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <nav class="main-header navbar navbar-expand navbar-white text-danger">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -155,7 +166,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </ul>
       </nav>
 
-
+      @if (Auth::user()->role=="admin")
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
@@ -170,6 +181,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
         </ul>
       </nav>
+      @endif
+          
+      
+      
 
        <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -219,7 +234,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </ul>
       </nav>
 
-
+      @if (Auth::user()->role=="admin")
        <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
@@ -235,6 +250,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
         </ul>
       </nav>
+      @endif
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->

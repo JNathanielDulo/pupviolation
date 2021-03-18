@@ -20,8 +20,8 @@ class Violation extends Model
 
     public $timestamps = true;
     
-    // public function violation()
-    // {
-    //     return $this->belongsToMany(Offender::class,'Offender_Violation');
-    // }
+    public function violationSanctions()
+    {
+        return $this->belongsTo(ViolationSanctions::class);
+    }
 }

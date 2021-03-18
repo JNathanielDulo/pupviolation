@@ -31,6 +31,8 @@
                 <div class="col-sm-6">
                     <h1 class="m-0">Violations</h1>
                 </div><!-- /.col -->
+
+                @if (Auth::user()->role=="admin")
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
 
@@ -88,7 +90,10 @@
                     </ol>
 
 
-                </div><!-- /.col -->
+                </div>
+                @endif
+                
+                <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -129,7 +134,9 @@
                                                 <th class="w-25 text-center">Violation Title</th>
                                                 <th class="w-50">Disciplinary Sanctions</th>
                                                 <th class="w-auto">last updated</th>
+                                                @if (Auth::user()->role=="admin")
                                                 <th class="w-auto">Actions</th>
+                                                @endif
 
                                             </tr>
                                         </thead>
@@ -143,6 +150,8 @@
                                                     {!!$violation->disciplinarySanctions!!}
                                                 </td>
                                                 <td>{{$violation->updated_at}}</td>
+
+                                                @if (Auth::user()->role=="admin")
                                                 <td class='row'>
                                                     {{-- <a href="violationEdit/{{$violation->id}}"
                                                     class="btn btn-xs btn-default"><i class="fas fa-edit"></i></a> --}}
@@ -207,6 +216,7 @@
 
 
                                                 </td>
+                                                @endif
                                             </tr>
                                             @endforeach
 

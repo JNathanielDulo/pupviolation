@@ -39,6 +39,20 @@
   <link rel="stylesheet" href="adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="adminlte/dist/css/adminlte.min.css">
+  <style>
+    .pupcolor{
+
+     color:#800000;
+    }
+    .pupbg{
+      background-color: #800000;
+    }
+  body{
+      min-height: 100vh;
+      height:100vh;
+  }
+    
+  </style>
 </head>
 
 <body>
@@ -100,7 +114,7 @@
             </div>
         </nav> --}}
 
-        <main class="hold-transition login-page">
+        <main class="">
             @yield('content')
         </main>
     </div>
