@@ -7,6 +7,10 @@ use App\Http\Controllers\ViolationController;
 use App\Http\Controllers\ViolationArchiveController;
 use App\Http\Controllers\OffenderController;
 use App\Http\Controllers\OffenderViolationController;
+use App\Http\Controllers\ViolationSanctionController;
+use App\Http\Controllers\ViolationSanctionArchiveController;
+use App\Models\ViolationSanctions;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,12 +46,13 @@ Route::get('/users', [HomeController::class, 'users'])->name('users');
 
 Route::get('/sanction_cleared', [HomeController::class, 'sanction_cleared'])->name('sanction_cleared');
 Route::get('/violations/archive',[ViolationArchiveController::class, 'show_deleted'])->name('violationArchive');
-Route::get('violations/archive/{id}',[ViolationArchiveController::class,'restoreDeletedViolation'])->name('restoreDeletedViolation');
+Route::get('/violations/archive/{id}',[ViolationArchiveController::class,'restoreDeletedViolation'])->name('restoreDeletedViolation');
 Route::get('/report_logs', [HomeController::class, 'report_logs'])->name('reportlogs');
-
+Route::get('/violationSanction/archive/{id}',[ViolationSanctionArchiveController::class, 'show_deleted'])->name('violationSanctionArchive');
+Route::get('/violationSanction/archive/restore/{id}',[ViolationSanctionArchiveController::class, 'restoreDeletedViolation'])->name('restoreDeletedViolationSanction');
 
 Route::resource('violations',ViolationController::class);
 
 Route::resource('offenders',OffenderController::class);
 Route::resource('offenderview',OffenderViolationController::class);
-
+Route::resource('violationSanction',ViolationSanctionController::class);

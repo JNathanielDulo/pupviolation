@@ -14,6 +14,12 @@ class Violation extends Model
 
     protected $table = "violations";
 
+    protected $fillable = [
+        'violationTitle',
+        'type'
+    ];
+    protected $guarded =[];
+
     protected $dates = ['deleted_at'];
 
     public $primaryKey = "id";
@@ -22,6 +28,6 @@ class Violation extends Model
     
     public function violationSanctions()
     {
-        return $this->belongsTo(ViolationSanctions::class);
+        return $this->hasMany(ViolationSanctions::class);
     }
 }

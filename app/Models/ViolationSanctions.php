@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ViolationSanctions extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = "violation_sanctions";
 
@@ -16,7 +18,7 @@ class ViolationSanctions extends Model
     public $timestamps = true;
     protected $guarded = [];
 
-    public funciton violation()
+    public function violation()
     {
         return $this->belongsTo(Violation::class);
     }

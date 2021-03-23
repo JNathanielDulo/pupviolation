@@ -4,18 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Violation;
+use App\Models\ViolationSanctions;
 
-class ViolationController extends Controller
+class ViolationSanctionController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -24,11 +16,6 @@ class ViolationController extends Controller
     public function index()
     {
         //
-        $violations = Violation::all();
-        $activelink='violations';
-        return view('pages.violations')
-        ->with('activelink',$activelink)
-        ->with('violations', $violations);
     }
 
     /**
@@ -50,16 +37,18 @@ class ViolationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'violationTitle' => 'required',
-            'violationType' => 'required'
+            'OrdinalOffensenumber' => 'required',
+            'details' => 'required'
         ]);
         //create post
-        $violation = new Violation;
-        $violation->violationTitle = $request->input('violationTitle');
-        $violation->type = $request->input('violationType');
-        $violation->save();
+        $id = $request->input('violation_id');
+        $sanction = new ViolationSanctions;
+        $sanction->violation_id = $request->input('violation_id');
+        $sanction->Offense = $request->input('OrdinalOffensenumber');
+        $sanction->details = $request->input('details');
+        $sanction->save();
         
-        return redirect('/violations')->with('success', 'new Violation Added');
+        return redirect('violations/'.$id)->with('success', 'new Violation Added');
     }
 
     /**
@@ -70,13 +59,7 @@ class ViolationController extends Controller
      */
     public function show($id)
     {
-        $activelink='violations';
-        $violation = Violation::find($id);
-        
-        return view('pages.violationView')
-        ->with('activelink',$activelink)
-        ->with('violation',$violation);
-
+        //
     }
 
     /**
@@ -87,11 +70,7 @@ class ViolationController extends Controller
      */
     public function edit($id)
     {
-        
-        $violation = Violation::find($id);
-
-        
-
+        //
     }
 
     /**
@@ -104,17 +83,18 @@ class ViolationController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'violationTitle' => 'required',
-            'violationType' => 'required'
+            'editOrdinalOffensenumber' => 'required',
+            'editdetails' => 'required'
         ]);
+        //create post
+         $violation_id = $request->input('violation_id');
+        $sanction = ViolationSanctions::find($id);
+        $sanction->violation_id = $request->input('violation_id');
+        $sanction->Offense = $request->input('editOrdinalOffensenumber');
+        $sanction->details = $request->input('editdetails');
+        $sanction->save();
         
-        $violation = Violation::find($id);
-      
-        $violation->violationTitle = $request->input('violationTitle');
-        $violation->type = $request->input('violationType');
-        $violation->save();
-        
-        return redirect('/violations')->with('success', 'Violation saved');
+        return redirect('violations/'.$violation_id)->with('success', 'new Violation Added');
     }
 
     /**
@@ -125,9 +105,11 @@ class ViolationController extends Controller
      */
     public function destroy($id)
     {
-        $violation = Violation::find($id);
+        
+        $violation = ViolationSanctions::find($id);
         $violation->delete();
-        return redirect('/violations')->with('success', 'Violation removed');
+        return redirect()->back()->with('success','item deleted');
+        
+        // return redirect('/violations')->with('success', 'Violation removed');
     }
-    
 }

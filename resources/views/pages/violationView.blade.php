@@ -1,35 +1,17 @@
 @extends('layouts.home')
 
 @section('content')
-{{-- <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
 
-<div class="card-body">
-    @if (session('status'))
-    <div class="alert alert-success" role="alert">
-        {{ session('status') }}
-    </div>
-    @endif
-
-    {{ __('You are logged in!') }}
-</div>
-</div>
-</div>
-</div>
-</div> --}}
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-           @include('layouts.inc.messages')
+            @include('layouts.inc.messages')
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Violations</h1>
+                    <h1 class="m-0">Violation : {{$violation->violationTitle}}</h1>
                 </div><!-- /.col -->
 
                 @if (Auth::user()->role=="admin")
@@ -38,45 +20,43 @@
 
 
 
-                        <button type="button" class="btn btn-success mb-1 mr-1" data-toggle="modal" data-target="#validation_add">
-                            New Violation
+                        <button type="button" class="btn btn-success mb-1 mr-1" data-toggle="modal"
+                            data-target="#sanction_add">
+                            New Sanction
                         </button>
-                        <a href="violations/archive" class="btn btn-warning mb-1 mr-1 text-light">
-                            Violation Archive
+                        <a href="/violationSanction/archive/{{$violation->id}}" class="btn btn-warning mb-1 mr-1 text-light">
+                            Archive
                         </a>
 
 
 
                         <!-- Modal -->
-                        <div class="modal fade" id="validation_add" tabindex="-1" aria-labelledby="validation_add"
+                        <div class="modal fade" id="sanction_add" tabindex="-1" aria-labelledby="add new sanction"
                             aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="validation_add">Add Violations</h5>
+                                        <h5 class="modal-title" id="sanction_add">Add Sanction</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
 
-                                    {!! Form::open(['route' => ['violations.store'],'method'=> 'POST']) !!}
+                                    {!! Form::open(['route' => ['violationSanction.store'],'method'=> 'POST']) !!}
                                     <div class="modal-body">
+                                        {{Form::hidden('violation_id', $violation->id, ['class' => 'form-control', 'placeholder' => 'nth number', 'aria-describedby' => 'Validation_id'])}}
 
                                         <div class="mb-3">
-                                            {{Form::label('violationTitle','Violation Title')}}
-                                            {{Form::text('violationTitle', '', ['class' => 'form-control', 'placeholder' => 'Title', 'aria-describedby' => 'Violation Title'])}}
-                                            
+                                            {{Form::label('OrdinalOffensenumber','Ordinal Offense number')}}
+                                            {{Form::text('OrdinalOffensenumber', '', ['class' => 'form-control', 'placeholder' => 'nth number', 'aria-describedby' => 'Ordinal Offense number'])}}
+
 
                                         </div>
                                         <div class="mb-3">
-                                            {{Form::label('violationType','Type',['class' => 'form-label'])}}
-                                            <select name="violationType" id="violationType" class="form-control">
-                                                <option ><p class="text-muted">select violation Type...</p></option>
-                                                <option value="major violation">Major violation</option>
-                                                <option value="minor violation">Minor violation</option>
-                                                
-                                              </select>
-                                            
+                                            {{Form::label('details','Details',['class' => 'form-label'])}}
+                                            {{Form::text('details', '', ['class' => 'form-control', 'placeholder' => 'Details', 'aria-describedby' => 'Details'])}}
+
+
                                         </div>
 
 
@@ -97,7 +77,7 @@
 
                 </div>
                 @endif
-                
+
                 <!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -112,7 +92,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Violation List</h3>
+                                <h3 class="card-title">Sanction List</h3>
 
                                 <div class="card-tools">
                                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -129,102 +109,99 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                @if(count($violations)>0)
+                                @if(count($violation->violationSanctions)>0)
                                 <div class="col-12 table-responsive" style="height: 70vh;">
 
                                     <table class="table table-sm table-hover table-head-fixed">
                                         <thead>
                                             <tr>
 
-                                                <th class="w-50">Violation Title</th>
-                                                <th class="w-25">Type</th>
-                                                <th class="w-auto">last updated</th>
-                                                @if (Auth::user()->role=="admin")
+                                                {{-- <th>#</th> --}}
+                                                <th>Ordinal number</th>
+                                                <th class="w-50">Details</th>
+                                                <th>last updated</th>
                                                 <th class="w-auto">Actions</th>
-                                                @endif
+
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($violations as $violation)
+                                            @foreach ($violation->violationSanctions as $sanction)
                                             <tr>
+                                                {{-- <td>{{$loop->iteration}}</td> --}}
+                                                <td>{{$sanction->offense}}</td>
+                                                <td>{{$sanction->details}}</td>
+                                                <td>{{$sanction->updated_at}}</td>
+                                                <td class="row">
 
-
-                                                <td>{{$violation->violationTitle}}</td>
-                                                <td>
-                                                    {!!$violation->type!!}
-                                                </td>
-                                                <td>{{$violation->updated_at}}</td>
-
-                                                @if (Auth::user()->role=="admin")
-                                                <td class='row'>
-                                                    <a href="{{asset('/violations/'.$violation->id)}}"  class="btn btn-sm ml-1 mb-1 btn-default">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
                                                     <button type="button" class="btn btn-sm ml-1 mb-1 btn-default"
                                                         data-toggle="modal"
-                                                        data-target="#validation_edit{{$violation->id}}">
+                                                        data-target="#sanction_edit{{$sanction->id}}">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="validation_edit{{$violation->id}}"
-                                                        tabindex="-1"
-                                                        aria-labelledby="validation_edit{{$violation->id}}"
+                                                    <div class="modal fade" id="sanction_edit{{$sanction->id}}"
+                                                        tabindex="-1" aria-labelledby="sanction_edit{{$sanction->id}}"
                                                         aria-hidden="true">
                                                         <div class="modal-dialog modal-lg">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="validation_add">Edit
-                                                                        Violations</h5>
+                                                                        Offense</h5>
                                                                     <button type="button" class="close"
                                                                         data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">×</span>
                                                                     </button>
                                                                 </div>
-                                                                {!! Form::open(['route' => ['violations.update',$violation->id],'method'=> 'POST']) !!}
-                                                                    <div class="modal-body">
+                                                                {!! Form::open(['route' =>
+                                                                ['violationSanction.update',$sanction->id],'method'=>
+                                                                'POST']) !!}
+                                                                {{Form::hidden('violation_id', $violation->id, ['class' => 'form-control'])}}
 
-                                                                        <div class="mb-3">
-                                                                            {{Form::label('violationTitle','Violation Title')}}
-                                                                            {{Form::text('violationTitle', $violation->violationTitle, ['class' => 'form-control', 'placeholder' => 'Title', 'aria-describedby' => 'Violation Title'])}}
-                                                                            
+                                                                <div class="modal-body">
 
-                                                                        </div>
-                                                                        {{Form::label('violationType','Type',['class' => 'form-label'])}}
-                                                                        <select name="violationType" id="violationType" class="form-control">
-                                                                            <option value="{{$violation->type}}" selected>{{$violation->type}}</p></option>
-                                                                            <option value="major violation">Major violation</option>
-                                                                            <option value="minor violation">Minor violation</option>
-                                                                            
-                                                                          </select>
-
-
-
+                                                                    <div class="mb-3">
+                                                                        {{Form::label('editOrdinalOffensenumber','Ordinal Offense number')}}
+                                                                        {{Form::text('editOrdinalOffensenumber', $sanction->offense, ['class' => 'form-control', 'placeholder' => 'nth number', 'aria-describedby' => 'Ordinal Offense number'])}}
 
 
                                                                     </div>
-                                                                    <div class="modal-footer">
+                                                                    <div class="mb-3">
+                                                                        {{Form::label('editdetails','Details',['class' => 'form-label'])}}
+                                                                        {{Form::text('editdetails', $sanction->details, ['class' => 'form-control', 'placeholder' => 'Details', 'aria-describedby' => 'Details'])}}
 
-                                                                        {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
-                                                                        {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
+
                                                                     </div>
-                                                                    {{Form::hidden('_method','PUT')}}
-                                                                    {!! Form::close() !!}
-                                                               
+
+
+
+
+
+                                                                </div>
+                                                                <div class="modal-footer">
+
+                                                                    {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
+                                                                    {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
+                                                                </div>
+                                                                {{Form::hidden('_method','PUT')}}
+                                                                {!! Form::close() !!}
+
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    {!!Form::open(['route'=>['violations.destroy',$violation->id],'method' => 'POST']) !!}
+                                                    {!!Form::open(['route'=>['violationSanction.destroy',$sanction->id],'method'
+                                                    => 'POST']) !!}
+        
                                                     {{Form::button('<i class="fa fa-ban"></i>', ['type' => 'submit','class'=>'btn btn-sm btn-default ml-1 mb-1'])}}
                                                     {{Form::hidden('_method','DELETE')}}
-                                                    
+
                                                     {!! Form::close() !!}
 
 
 
+
                                                 </td>
-                                                @endif
                                             </tr>
                                             @endforeach
 
@@ -235,7 +212,7 @@
 
 
                                 @else
-                                <p> Violation list empty</p>
+                                <p> Sanction list empty</p>
                                 @endif
 
                             </div>
@@ -269,6 +246,7 @@
 <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
 <script>
     CKEDITOR.replace('violationbody-ckeditor');
+
 </script>
 
 <script>
