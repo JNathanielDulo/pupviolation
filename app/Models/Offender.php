@@ -32,5 +32,10 @@ class Offender extends Model
     {
         return $this->belongsToMany(Violation::class,'Offender_Violation','offender_id', 'violation_id');
     }
+    public function sanctions()
+    {
+        return $this->hasManyThrough(ViolationSanctions::class, Violation::class);
+    }
+    
 
 }

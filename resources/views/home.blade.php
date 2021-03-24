@@ -50,51 +50,46 @@
                 <div class="row">
                     <div class="col-lg-4 col-xs-8">
                         <!-- small box -->
-                        <div class="small-box bg-aqua">
+                        <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>12</h3>
+                                <h3>{{$usercount}}</h3>
 
-                                <p>Total of Offenders</p>
+                                <p>Total Users</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="{{route('users.index')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-                    <!-- ./col -->
                     <div class="col-lg-4 col-xs-8">
                         <!-- small box -->
-                        <div class="small-box bg-green">
+                        <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                <h3>{{$offendercount}}</h3>
 
-                                <p>Total of Sanction Cleared</p>
+                                <p>Total Offenders</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="ion ion-bag"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="{{route('offenders.index')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-                    <!-- ./col -->
                     <div class="col-lg-4 col-xs-8">
                         <!-- small box -->
-                        <div class="small-box bg-yellow">
+                        <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>4</h3>
+                                <h3>{{$violationcount}}</h3>
 
-                                <p>Total of Appeals</p>
+                                <p>Total entry of violation</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="ion ion-bag"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="{{route('violations.index')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-                    <!-- ./col -->
-
-
 
                     <!-- /.row -->
                 </div>

@@ -172,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-                <a href="{{route('users')}}" class="nav-link {{($activelink=='users')? 'active': ''}}">
+                <a href="{{route('users.index')}}" class="nav-link {{($activelink=='users')? 'active': ''}}">
                 <i class="nav-icon fas fa-user-alt"></i>
                   <p>
                     Users
@@ -223,7 +223,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-                <a href="{{route('sanction_cleared')}}" class="nav-link {{($activelink=='sanction_cleared')? 'active': ''}}">
+                <a href="{{route('SanctionCleared.index')}}" class="nav-link {{($activelink=='SanctionCleared')? 'active': ''}}">
                  <i class="nav-icon fa-fw fas fa-check-circle"></i>
                   <p>
                     Sanction Cleared

@@ -115,29 +115,55 @@ class OffenderController extends Controller
     {
         //display violation of the given offender id
         //and show it on the offender/{id}
+        
+
+
+        //match the violation_id then find the matching sanction details via ordinal offense.
+
+
+
+
+
+
+
 
         $offender = Offender::find($id);
+        $collection = $offender->violations->countBy('violationTitle');
+        
+        
 
         // SELECT *, COUNT(violation_id) as occurances FROM `offender_violation` JOIN `violations` ON `offender_violation`.`violation_id` = `violations`.id WHERE offender_id = 1 GROUP BY violation_id ORDER BY violation_id asc
         $violationlist = DB::table('offender_violation')
                             ->leftJoin('violations','violations.id','offender_violation.violation_id')
-                            ->select(DB::raw('violationTitle, COUNT(violation_id) as occurances'))
+                            ->select(DB::raw('violation_id,violationTitle, COUNT(violation_id) as occurances'))
                             ->where('offender_id','=',$id)
                             ->groupBy('violation_id','violationTitle')
                             ->orderByRaw('violation_id ASC')
                             ->get();
-        // foreach($violationlist as $list){
-        //     echo $list->violationTitle;
-        // }
+        // // dd($violationlist);
+
+      
 
         $violations = Violation::all();
+        
+
+        // foreach($violations as $violation)
+        // {
+        //     echo "title:".$violation->violationTitle."<br>";
+        //     foreach ($violation->violationSanctions as $sanction) {
+        //         echo "offense:".$sanction->offense."<br>";
+        //         echo "details:".$sanction->details."<br>";
+        //     }
+        // }
+        
         $activelink='offenders';
         
-        //dd(count($offender->violations));
+        // dd(count($offender->violations));
         return view('pages.offenderview')
         ->with('activelink',$activelink)
         ->with('violations',$violations)
         ->with('offender',$offender)
+        ->with('collection',$collection)
         ->with('violationlist',$violationlist);
         
 

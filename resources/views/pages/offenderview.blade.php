@@ -164,10 +164,10 @@
                                     <table class="table table-hover table-head-fixed">
                                         <thead>
                                             <tr>
-
-                                                <th class="w-50 text-left">Violation Title</th>
-                                                <th class="w-25">number of offense</th>
-                                                <th class="w-auto">Actions</th>
+                                                
+                                                <th>Violation Title</th>
+                                                <th>number of offense</th>
+                                                <th>Actions</th>
 
                                             </tr>
                                         </thead>
@@ -175,7 +175,7 @@
                                             @foreach ($violationlist as $violation)
                                             <tr>
 
-
+                                                
                                                 <td class="text-left">{{$violation->violationTitle}}</td>
                                                 <td>
 
@@ -200,9 +200,11 @@
                                                     
                                                     
                                                 </td>
+                                            
+                                               
                                                 <td class='row'>
-                                                 action
-
+                                                 <a href="#" class="btn btn-default mb-1 mr-1"><i class="fa fa-eye text-primary"></i></a>
+                                                 <button class="btn btn-default mb-1 mr-1"><i class="fa fa-check text-succes"></i></button>
                                                 </td>
                                             </tr>
                                             @endforeach

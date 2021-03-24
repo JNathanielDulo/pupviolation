@@ -17,7 +17,7 @@ class RecreateViolationSanctionTable extends Migration
             
             $table->id();
             $table->integer('violation_id');
-            $table->string('offense');
+            $table->integer('offense');
             $table->string('details');
             $table->softDeletes();
             $table->timestamps();

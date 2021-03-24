@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Offender;
+use App\Models\Violation;
 
 class HomeController extends Controller
 {
@@ -24,9 +27,23 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        $user = User::all();
+        $usercount = count($user);
+     
+
+        $offendercount = Offender::all()->count('id');
+        $violationcount = Violation::all()->count('id');
+
+
+
+
         $activelink='dashboard';
 
-        return view('home')->with('activelink',$activelink);
+        return view('home')->with('activelink',$activelink)
+        ->with('usercount',$usercount)
+        ->with('offendercount',$offendercount)
+        ->with('violationcount',$violationcount);
     }
 
     public function users()

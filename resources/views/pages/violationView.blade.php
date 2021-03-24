@@ -48,7 +48,7 @@
 
                                         <div class="mb-3">
                                             {{Form::label('OrdinalOffensenumber','Ordinal Offense number')}}
-                                            {{Form::text('OrdinalOffensenumber', '', ['class' => 'form-control', 'placeholder' => 'nth number', 'aria-describedby' => 'Ordinal Offense number'])}}
+                                            {{Form::number('OrdinalOffensenumber', '', ['class' => 'form-control', 'placeholder' => 'nth number', 'aria-describedby' => 'Ordinal Offense number'])}}
 
 
                                         </div>
@@ -112,7 +112,7 @@
                                 @if(count($violation->violationSanctions)>0)
                                 <div class="col-12 table-responsive" style="height: 70vh;">
 
-                                    <table class="table table-sm table-hover table-head-fixed">
+                                    <table class="table table-md table-hover table-head-fixed">
                                         <thead>
                                             <tr>
 
@@ -129,7 +129,24 @@
                                             @foreach ($violation->violationSanctions as $sanction)
                                             <tr>
                                                 {{-- <td>{{$loop->iteration}}</td> --}}
-                                                <td>{{$sanction->offense}}</td>
+                                                <td>
+                                                    @if($sanction->offense==1)
+                                                    <span class="tag tag-success text-danger bg-white border border-warning rounded p-2" style="color:#ffc107!important;">
+                                                        {{$sanction->offense}}st offense
+                                                    </span>
+                                                    @elseif($sanction->offense==2)
+                                                    <span class="tag tag-success text-danger bg-white border rounded p-2" style="color:#ff7504!important;border-color:#ff7504!important">
+                                                        {{$sanction->offense}}nd offense
+                                                    </span>
+                                                    @elseif($sanction->offense==3)
+                                                    <span class="tag tag-success text-danger bg-white border rounded p-2" style="color:#ff0404!important;border-color:#ff0404!important">
+                                                        {{$sanction->offense}}rd offense
+                                                    </span>
+                                                    @elseif($sanction->offense>3&&$sanction->offense<21)
+                                                    <span class="tag tag-success bg-danger  border rounded p-2" style="color:#fff!important;border-color:#fffb04!important;">
+                                                        {{$sanction->offense}}th offense
+                                                    </span>
+                                                    @endif</td>
                                                 <td>{{$sanction->details}}</td>
                                                 <td>{{$sanction->updated_at}}</td>
                                                 <td class="row">
