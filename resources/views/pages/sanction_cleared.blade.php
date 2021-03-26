@@ -39,85 +39,6 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-
-
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newOffender">
-                            Offenders
-                        </button>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="newOffender" tabindex="-1" aria-labelledby="newOffenderTitle"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="newOffenderTitle">Add Offenders</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        {{-- <form> --}}
-                                          {!! Form::open(['route' =>['offenders.store'],'method'=>'POST']) !!}
-                                          {{-- hidden --}}
-                                            {{-- <div class="mb-3">
-                                                <label for="exampleInputEmail1" class="form-label">Filed By</label>
-                                                <input type="email" class="form-control" id="exampleInputEmail1"
-                                                    aria-describedby="emailHelp">
-
-                                            </div> --}} 
-                                            
-                                            <div class="mb-3">
-                                             
-                                            {{Form::label('studentNumber','Student Number')}}
-                                            {{Form::text('studentNumber', '', ['class' => 'form-control', 'placeholder' => '0000-0000-SP-0', 'aria-describedby' => 'student number'])}}
-                                            {{Form::hidden('filedby', Auth::user()->name .'/'. Auth::user()->role)}}
-                                            </div>
-                                            <div class="mb-3">
-                                              {{Form::label('studentName','Name')}}
-                                              {{Form::text('studentName', '', ['class' => 'form-control', 'aria-describedby' => 'course'])}}
-                                              
-                                              </div>
-                                            
-                                            <div class="mb-3">
-                                            {{Form::label('studentCourse','Course')}}
-                                            
-                                            <select class="form-control select2bs4" name="studentCourse" id="studentCourse" style="width: 100%;">
-                                              <option>select Course...</option>
-                                              <option value="BSA">Bachelor of Science in Accountancy (BSA)</option>
-                                              <option value="BSBA-HRM">Bachelor of Science in Business Administration major in Human Resource Management (BSBA-HRM)</option>
-                                              <option value="BSBA-MM">Bachelor of Science in Business Administration major in Marketing Management (BSBA-MM)</option>
-                                              <option value="BSENTREP">Bachelor of Science in Entrepreneurship (BSENTREP)</option>
-                                              <option value="BSEDEN">Bachelor of Secondary Education major in English (BSEDEN)</option>
-                                              <option value="BSEDMT">Bachelor of Secondary Education major in Mathematics (BSEDMT)</option>
-                                              <option value="BSIT">Bachelor of Science in Information Technology (BSIT)</option>
-                                              
-                                            </select>
-                                            </div>
-                                            <div class="mb-3">
-                                              {{Form::label('email','E-mail')}}
-                                              {{Form::email('studentEmail', '', ['class' => 'form-control', 'aria-describedby' => 'email'])}}
-                                              
-                                            </div>
-                                            <div class="mb-3">
-                                              {{Form::label('contactNum','Contact Number')}}
-                                              {{Form::text('contactNum', '', ['class' => 'form-control', 'aria-describedby' => 'contact number'])}}
-                                              
-                                            </div>
-
-                                            
-                                            
-                                    </div>
-                                    <div class="modal-footer">
-                                      {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
-                                      {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
-                                      {!! Form::close() !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -159,9 +80,9 @@
                                         <td>{!!$offender->studentNumber!!}</td>
                                         <td>{!!$offender->name!!}</td>
                                         <td>{!!$offender->course!!}</td>
-                                        <td>{{count($offender->violations)}}</td>
+                                        <td>{{count($offender->violationsCleared)}}</td>
                                         <td>
-                                            <a href="{{asset('/offenders/'.$offender->id)}}"  class="btn btn-xs btn-default">
+                                            <a href="{{asset('/SanctionCleared/'.$offender->id)}}"  class="btn btn-xs btn-default">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             
@@ -176,7 +97,7 @@
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Add Offenders</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Update {{$offender->studentNumber}}</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">×</span>
                                                                 </button>

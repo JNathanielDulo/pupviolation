@@ -49,6 +49,7 @@ class OffenderViolationController extends Controller
         $violationid = $request->input('violationid');
         $offender = Offender::find($id);
         $offender->violations()->attach($violationid);
+        $offender->violations()->updateExistingPivot($violationid,['status' => 0]);
        
 
         $violations = Violation::all();

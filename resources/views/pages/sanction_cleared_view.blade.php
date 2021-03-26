@@ -39,111 +39,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-
-
-
-
-
-                        <!-- Button trigger modal -->
-
-                        <button type="button" class="btn btn btn-success mb-1 mr-1" data-toggle="modal"
-                            data-target="#newViolation">
-                            new Violation
-                        </button>
-                        <a href="{{route('offenders.index')}}" class="btn btn btn-primary mb-1 mr-1">
-                            Back
-                        </a>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="newViolation" tabindex="-1" aria-labelledby="newViolationTitle"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="newViolationTitle">Add Offenders</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            {{-- <form> --}}
-                                            {!! Form::open(['route'
-                                            =>['offenderview.store'],'method'=>'POST','class'=>'row p-2']) !!}
-                                            {{Form::hidden('offender_id', $offender->id)}}
-
-                                            <div class="col-md-6">
-                                                {{Form::label('studentNumber','student Number')}}
-                                                :
-                                                {{Form::label('studentNumber',$offender->studentNumber)}}
-                                                {{Form::hidden('studentNumber', $offender->studentNumber, ['class' => 'form-control', 'placeholder' => '0000-0000-SP-0', 'aria-describedby' => 'student number'])}}
-                                                {{Form::hidden('filedby', Auth::user()->name .'/'. Auth::user()->role)}}
-                                            </div>
-                                            <div class="col-md-6">
-                                                {{Form::label('',"Complete Name")}}
-                                                :
-                                                {{Form::label('studentName',$offender->name)}}
-                                                {{Form::hidden('studentName', $offender->name, ['class' => 'form-control', 'aria-describedby' => 'course'])}}
-
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                {{Form::label('studentCourse','Course :')}}
-                                                {{Form::label('studentCourse',$offender->course)}}
-
-                                                <select class="form-control" name="studentCourse" id="studentCourse"
-                                                    style="width: 100%;" hidden>
-                                                    <option value="{{$offender->course}}" selected option>
-                                                        {{$offender->course}}</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                {{Form::label('email','E-mail :')}}
-                                                {{Form::label('email',$offender->email)}}
-                                                {{Form::hidden('studentEmail', $offender->email,['class' => 'form-control', 'aria-describedby' => 'email'])}}
-
-                                            </div>
-                                            <div class="col-md-6 ml-md-auto">
-                                                {{Form::label('contactNum','Contact Number :')}}
-                                                {{Form::label('contactNum',$offender->contactnum)}}
-                                                {{Form::hidden('contactNum', $offender->contactnum, ['class' => 'form-control', 'aria-describedby' => 'contact number'])}}
-
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    {{Form::label('violationid','Violation')}}
-                                                    <select class="form-control select2bs4 select2" name="violationid"
-                                                        id="violationid" style="width: 100%;">
-                                                        <option>select Violation...</option>
-                                                        @if (count($violations)>0)
-                                                        @foreach ($violations as $violation)
-
-                                                        <option value="{{$violation->id}}">
-                                                            {{$violation->violationTitle}}</option>
-                                                        @endforeach
-
-                                                        @else
-                                                        <option>violation list empty</option>
-                                                        @endif
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        {{Form::button('Cancel',['class'=>'btn btn-default','data-dismiss'=>'modal'])}}
-                                        {{Form::submit('Submit',['class'=>'btn btn-primary'])}}
-                                        {!! Form::close() !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </ol>
-
-
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -165,33 +61,29 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                @if(count($offender->violations)>0)
+                                
+                                @if(count($offender->violationsCleared)>0)
 
-
+                               
                                 <div class="col-12 table-responsive" style="height: 70vh;">
-
                                     <table class="table table-hover table-head-fixed table-striped">
                                         <thead>
                                             <tr>
 
-                                                <th class="w-25">Violation Title</th>
+                                                <th class="w-50">Violation Title</th>
                                                 <th>number of offense</th>
-                                                <th class="text-center">violation details</th>
                                                 <th>status</th>
                                                 <th>Actions</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($offender->violationsPending->groupBy('violationTitle') as $violation)
-                                            <?php
-                                            $res = $violations->where('id','=',$violation[0]->id)->first();
-                                            
-                                            ?>
+                                           
+                                            @foreach ($offender->violationsCleared->groupBy('violationTitle') as $violation)
+
                                             <tr>
 
                                                 <td>
-                                                    
                                                     {{$violation[0]->violationTitle}}
                                                 </td>
                                                 <td>
@@ -219,69 +111,7 @@
 
                                                 </td>
                                                 <td>
-
-                                                    @foreach ($res->violationSanctions as $sanctions) 
-                                                        @if ($sanctions->offense == count($violation))
-                                                            @if($sanctions->offense==1)
-                                                            <p class="text-danger p-2 m-0 text-center text-bold"
-                                                                style="color:#ffc107!important;">
-                                                                {{$sanctions->offense}}st offense
-                                                            </p>
-                                                            <p class="mb-2 text-bold text-center">{{$sanctions->details}}</p>
-                                                            @elseif($sanctions->offense==2)
-                                                            <p class="text-danger p-2 m-0 text-center text-bold"
-                                                                style="color:#ff7504!important;">
-                                                                {{$sanctions->offense}}nd offense
-                                                            </p>
-                                                            <p class="mb-2 text-bold text-center">{{$sanctions->details}}</p>
-                                                            @elseif($sanctions->offense==3)
-                                                            <p class="text-danger p-2 m-0 text-center text-bold"
-                                                                style="color:#ff0404!important;">
-                                                                {{$sanctions->offense}}rd offense
-                                                            </p>
-                                                            <p class="mb-2 text-bold text-center">{{$sanctions->details}}</p>
-                                                            @elseif($sanctions->offense>3&&$sanctions->offense<21) <p
-                                                                class=" p-2 m-0 text-center text-bold"
-                                                                style="color:#fff!important;">
-                                                                {{$sanctions->offense}}th offense
-                                                                </p>
-                                                                <p class="mb-2 text-bold text-center">{{$sanctions->details}}</p>
-                                                                @endif
-                                                        
-                                                        
-                                                        
-                                                        @elseif($sanctions->offense < count($violation))
-                                                            @if($sanctions->offense==1)
-                                                            <p class="text-danger p-2 m-0 text-center text-bold"
-                                                                style="color:#ffc107!important;">
-                                                                {{$sanctions->offense}}st offense
-                                                            </p>
-                                                            <p class="mb-2 text-bold text-center">{{$sanctions->details}}</p>
-                                                            @elseif($sanctions->offense==2)
-                                                            <p class="text-danger p-2 m-0 text-center text-bold"
-                                                                style="color:#ff7504!important;">
-                                                                {{$sanctions->offense}}nd offense
-                                                            </p>
-                                                            <p class="mb-2 text-bold text-center">{{$sanctions->details}}</p>
-                                                            @elseif($sanctions->offense==3)
-                                                            <p class="text-danger  p-2 m-0 text-center text-bold"
-                                                                style="color:#ff0404!important;">
-                                                                {{$sanctions->offense}}rd offense
-                                                            </p>
-                                                            <p class="mb-2 text-bold text-center">{{$sanctions->details}}</p>
-                                                            @elseif($sanction->offense>3&&$sanctions->offense<21)
-                                                            <p class="bg-danger p-2 m-0 text-center text-bold"
-                                                                style="color:#fff!important;">
-                                                                {{$sanctions->offense}}th offense
-                                                                </p>
-                                                                <p class="mb-2 text-bold text-center">{{$sanctions->details}}</p>
-                                                                @endif
-                                                            
-                                                        @endif
-                                                        
-                                                    @endforeach
-                                                </td>
-                                                <td>
+                                                    
                                                     <?php
                                                         foreach ($violation as $item) {
                                                             if ($item->pivot->status>0) {
@@ -301,7 +131,7 @@
                                                     @else
                                                     <p class="text-danger text-center bg-white border border-danger rounded p-2 mb-1"
                                                         style="color:#ec6e06!important;">
-                                                        pending
+                                                        pending 
                                                     </p>
                                                     @endif
                                                 </td>

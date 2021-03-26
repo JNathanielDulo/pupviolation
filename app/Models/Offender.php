@@ -30,12 +30,21 @@ class Offender extends Model
 
     public function violations()
     {
-        return $this->belongsToMany(Violation::class,'Offender_Violation','offender_id', 'violation_id');
+        return $this->belongsToMany(Violation::class,'offender_violation','offender_id', 'violation_id')->withPivot('status');
+    }
+    public function violationsPending()
+    {
+        return $this->belongsToMany(Violation::class,'offender_violation','offender_id','violation_id')->withPivot('status')->wherePivot('status',0);
+    }
+    public function violationsCleared()
+    {
+        return $this->belongsToMany(Violation::class,'offender_violation','offender_id','violation_id')->withPivot('status')->wherePivot('status',1);
     }
     public function sanctions()
     {
-        return $this->hasManyThrough(ViolationSanctions::class, Violation::class);
+        return $this->hasManyThrough(ViolationSanctions::class,Violation::class);
     }
+    
     
 
 }

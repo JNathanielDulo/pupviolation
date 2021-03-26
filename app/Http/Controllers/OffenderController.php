@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Violation;
 use App\Models\Offender;
+use App\Models\ViolationSanctions;
 
 class OffenderController extends Controller
 {
@@ -115,21 +116,11 @@ class OffenderController extends Controller
     {
         //display violation of the given offender id
         //and show it on the offender/{id}
-        
-
 
         //match the violation_id then find the matching sanction details via ordinal offense.
 
-
-
-
-
-
-
-
-        $offender = Offender::find($id);
-        $collection = $offender->violations->countBy('violationTitle');
-        
+        $offender = Offender::with('violationsPending')->find($id);
+        $offendergroupby = $offender->violationsPending->groupBy('violationTitle');
         
 
         // SELECT *, COUNT(violation_id) as occurances FROM `offender_violation` JOIN `violations` ON `offender_violation`.`violation_id` = `violations`.id WHERE offender_id = 1 GROUP BY violation_id ORDER BY violation_id asc
@@ -140,35 +131,19 @@ class OffenderController extends Controller
                             ->groupBy('violation_id','violationTitle')
                             ->orderByRaw('violation_id ASC')
                             ->get();
-        // // dd($violationlist);
-
       
-
-        $violations = Violation::all();
-        
-
-        // foreach($violations as $violation)
-        // {
-        //     echo "title:".$violation->violationTitle."<br>";
-        //     foreach ($violation->violationSanctions as $sanction) {
-        //         echo "offense:".$sanction->offense."<br>";
-        //         echo "details:".$sanction->details."<br>";
-        //     }
-        // }
-        
         $activelink='offenders';
+        $violations = Violation::with('violationSanctions')->get();
+        $violationSanctions = ViolationSanctions::all();
         
-        // dd(count($offender->violations));
         return view('pages.offenderview')
         ->with('activelink',$activelink)
         ->with('violations',$violations)
         ->with('offender',$offender)
-        ->with('collection',$collection)
+        ->with('offendergroupby',$offendergroupby)
+        ->with('violationSanctions',$violationSanctions)
         ->with('violationlist',$violationlist);
-        
-
-        
-    }
+      }
 
     /**
      * Show the form for editing the specified resource.

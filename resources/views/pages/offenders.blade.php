@@ -159,7 +159,7 @@
                                         <td>{!!$offender->studentNumber!!}</td>
                                         <td>{!!$offender->name!!}</td>
                                         <td>{!!$offender->course!!}</td>
-                                        <td>{{count($offender->violations)}}</td>
+                                        <td>{{count($offender->violationsPending)}}</td>
                                         <td>
                                             <a href="{{asset('/offenders/'.$offender->id)}}"  class="btn btn-xs btn-default">
                                                 <i class="fas fa-eye"></i>
@@ -176,7 +176,7 @@
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Add Offenders</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Update {{$offender->studentNumber}}</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">×</span>
                                                                 </button>
