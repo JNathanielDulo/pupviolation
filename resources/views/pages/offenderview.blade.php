@@ -178,7 +178,9 @@
                                                 <th>number of offense</th>
                                                 <th class="text-center">violation details</th>
                                                 <th>status</th>
+                                                @if(Auth::user()->role=="admin"||Auth::user()->role=="campusdirector")
                                                 <th>Actions</th>
+                                                @endif
 
                                             </tr>
                                         </thead>
@@ -220,7 +222,8 @@
                                                 </td>
                                                 <td>
 
-                                                    @foreach ($res->violationSanctions as $sanctions) 
+                                                    @foreach ($res->violationSanctions as $sanctions)
+                                                    
                                                         @if ($sanctions->offense == count($violation))
                                                             @if($sanctions->offense==1)
                                                             <p class="text-danger p-2 m-0 text-center text-bold"
@@ -251,6 +254,7 @@
                                                         
                                                         
                                                         @elseif($sanctions->offense < count($violation))
+                                                        
                                                             @if($sanctions->offense==1)
                                                             <p class="text-danger p-2 m-0 text-center text-bold"
                                                                 style="color:#ffc107!important;">
@@ -269,7 +273,7 @@
                                                                 {{$sanctions->offense}}rd offense
                                                             </p>
                                                             <p class="mb-2 text-bold text-center">{{$sanctions->details}}</p>
-                                                            @elseif($sanction->offense>3&&$sanctions->offense<21)
+                                                            @elseif($sanctions->offense>3&&$sanctions->offense<21)
                                                             <p class="bg-danger p-2 m-0 text-center text-bold"
                                                                 style="color:#fff!important;">
                                                                 {{$sanctions->offense}}th offense
@@ -306,7 +310,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-
+                                                @if(Auth::user()->role=="admin"||Auth::user()->role=="campusdirector")
                                                     @if ($pending == false)
                                                     <button type="button" class="btn btn-danger mx-1"
                                                         data-toggle="modal"
@@ -369,7 +373,7 @@
                                                     <button class="btn btn-success mx-1" type="button"
                                                         data-toggle="modal"
                                                         data-target="#clearnotice{{$violation[0]->id}}">
-                                                        <i class="fa fa-check fa-fw"></i></button>
+                                                        Clear</button>
                                                     <div class="modal fade" id="clearnotice{{$violation[0]->id}}"
                                                         tabindex="-1" role="dialog" aria-labelledby="clearModalTitle"
                                                         aria-hidden="true">
@@ -420,7 +424,7 @@
                                                         </div>
                                                     </div>
                                                     @endif
-
+                                                @endif
                                                 </td>
                                             </tr>
                                             @endforeach

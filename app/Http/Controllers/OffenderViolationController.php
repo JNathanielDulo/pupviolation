@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Offender;
 use App\Models\Violation;
+use App\Mail\ViolationMail;
+use Illuminate\Support\Facades\Mail;
 
 class OffenderViolationController extends Controller
 {
@@ -48,9 +50,24 @@ class OffenderViolationController extends Controller
         $id = $request->input('offender_id');
         $violationid = $request->input('violationid');
         $offender = Offender::find($id);
+    
+        
+        
         $offender->violations()->attach($violationid);
         $offender->violations()->updateExistingPivot($violationid,['status' => 0]);
        
+        $violation = Violation::find($violationid);
+
+        $details = [
+            'studentNumber'=>$offender->studentNumber,
+            'name'=>$offender->name,
+            'violationTitle'=>$violation->violationTitle,
+            'date'=>$offender->created_at,
+            'filedby'=>$offender->filedby
+    
+        ];
+       
+        Mail::to($offender->email)->send(new violationMail($details));
 
         $violations = Violation::all();
         $activelink='offenders';    

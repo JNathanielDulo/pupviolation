@@ -70,10 +70,13 @@
                                         <thead>
                                             <tr>
 
-                                                <th class="w-50">Violation Title</th>
+                                                <th>Violation Title</th>
                                                 <th>number of offense</th>
-                                                <th>status</th>
+                                                <th >status</th>
+                                                @if ( Auth::user()->role == "admin"||Auth::user()->role == "campusdirector")
                                                 <th>Actions</th>
+                                                
+                                                @endif
 
                                             </tr>
                                         </thead>
@@ -136,7 +139,8 @@
                                                     @endif
                                                 </td>
                                                 <td>
-
+                                                @if(Auth::user()->role == "admin"||Auth::user()->role == "campusdirector")
+                                                    
                                                     @if ($pending == false)
                                                     <button type="button" class="btn btn-danger mx-1"
                                                         data-toggle="modal"
@@ -251,6 +255,7 @@
                                                     </div>
                                                     @endif
 
+                                                @endif
                                                 </td>
                                             </tr>
                                             @endforeach

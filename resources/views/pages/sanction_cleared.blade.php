@@ -69,8 +69,9 @@
                                             <th>Student Number</th>
                                             <th>Name</th>
                                             <th>Course</th>
-                                            <th>Total Offenses</th>
+                                            <th>Total Sanction cleared</th>
                                             <th>Actions</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>

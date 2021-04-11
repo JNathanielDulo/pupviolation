@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Violation;
+use Illuminate\Support\Facades\Auth;
 
 class ViolationController extends Controller
 {
@@ -23,7 +24,8 @@ class ViolationController extends Controller
      */
     public function index()
     {
-        //
+        if(Auth::user()->role=='admin')
+        {}
         $violations = Violation::all();
         $activelink='violations';
         return view('pages.violations')
