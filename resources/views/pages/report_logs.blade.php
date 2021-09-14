@@ -30,11 +30,11 @@
                 <div class="col-sm-6">
                     <h1 class="m-0">Report Logs</h1>
                 </div><!-- /.col -->
-                <div class="col-sm-6">
+                {{-- <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Generate Reports
-                            </button>
+                        </button>
 
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -95,7 +95,7 @@
 
 
                     </ol>
-                </div><!-- /.col -->
+                </div><!-- /.col --> --}}
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -105,88 +105,64 @@
     <div class="content">
         <div class="container-fluid">
             <section class="content">
-
+             
+                  
+              
+               
+            
                 <div class="row">
+                  @foreach ($violations as $violation)
                     <div class="col-12">
                         <div class="card">
                           <div class="card-header">
-                            <h3 class="card-title">Responsive Hover Table</h3>
-
-                            <div class="card-tools">
-                              <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                                <div class="input-group-append">
-                                  <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
+                            <h3 class="card-title">{{$violation->violationTitle}}</h3>
                           </div>
                           <!-- /.card-header -->
                           <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap">
                               <thead>
                                 <tr>
-                                    <th>Filed by</th>
-                                    <th>Student Number</th>
-                                    <th>Name</th>
+                                    
+                                    <th>Student info</th>
                                     <th>Course</th>
-                                    <th>Violation Title</th>
-                                    <th>Number of Offenses (Per Classification)</th>
-                                    <th>Number of Offenses (Over All Violation)</th>
-                                    <th>Actions</th>
+                                    <th>Number of Offenses</th>
+                                    <th>Status</th>
                                 </tr>
                               </thead>
                               <tbody>
+                               
+                                @foreach($violation->offendersPending->groupBy('name') as $offenderPending)
                                 <tr>
-                                    <td>Guard</td>
-                                    <td>2017-00039-SP-0</td>
-                                    <td>Joana Marie Kimpano</td>
-                                    <td>BSIT 4-1</td>
-                                    <td>NO ID</td>
-                                    <td><span class="tag tag-success text-danger bg-white border border-warning rounded p-2" style="color:#ffc107!important;">1st offense</span></td>
-                                    <td>1st</td>
-                                    <th></th>
+                                  
+                                <td>{{$offenderPending[0]->studentNumber}} | {{$offenderPending[0]->name}}</td>
+                                <td>{{$offenderPending[0]->course}}</td>
+                                  <td>
+                                    <?php 
+                                    $count = 0;
+                                    foreach($violation->offendersPending as $entrycount){
+                                      if($entrycount->name == $offenderPending[0]->name)
+                                      $count++;
+                                    }
+                                    echo $count;
+                                    // $violation->offendersPending->count($offenderPending[0]->name)
+                                  ?>
+                                  </td>
+                                <td>
+                                  <p class="text-danger text-center bg-white border border-danger rounded p-0 mb-1" style="color:#ec6e06!important;">
+                                  pending
+                                  </p>
+                                </td>
                                 </tr>
-                                <tr>
-                                    <td>Guard</td>
-                                    <td>2017-00024-SP-0</td>
-                                    <td>Marlou Rillera</td>
-                                    <td>BSIT 4-1</td>
-                                    <td>Wearing of Inappropriate attire</td>
-                                    <td><span class="tag tag-success text-danger bg-white border border-warning rounded p-2" style="color:#ffc107!important;">1st offense</span></td>
-                                    <td>2nd</td>
-                                    <th></th>
-                                </tr>
-                                <tr>
-                                    <td>Campus Director</td>
-                                    <td>2017-00021-SP-0</td>
-                                    <td>Cerilo Verdejo</td>
-                                    <td>BSIT 4-1</td>
-                                    <td>Scandalous Display of Affection</td>
-                                    <td><span class="tag tag-success text-danger bg-white border border-warning rounded p-2" style="color:#ffc107!important;">1st offense</span></td>
-                                    <td>1st</td>
-                                    <th></th>
-                                </tr>
-                                <tr>
-                                    <td>Guard</td>
-                                    <td>2017-00028-SP-0</td>
-                                    <td>Patrick Tabogon</td>
-                                    <td>BSIT 4-1</td>
-                                    <td>Loss of ID</td>
-                                    <td><span class="tag tag-success text-danger bg-white border border-warning rounded p-2" style="color:#ffc107!important;">1st offense</span></td>
-                                    <td>1st</td>
-                                    <th></th>
-                                </tr>
+                                @endforeach
                               </tbody>
+                              
                             </table>
                           </div>
                           <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
                       </div>
+                    @endforeach
                 </div>
             </section>
         </div><!-- /.container-fluid -->

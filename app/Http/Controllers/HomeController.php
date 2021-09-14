@@ -71,7 +71,13 @@ class HomeController extends Controller
 
     public function report_logs()
     {
+        $violations = Violation::all();
+        $offenders = Offender::all();
         $activelink='report_logs';
-        return view('pages.report_logs')->with('activelink',$activelink);;
+        return view('pages.report_logs')
+        ->with('activelink',$activelink)
+        ->with('violations',$violations)
+        ->with('offenders',$offenders);
+        ;
     }
 }
